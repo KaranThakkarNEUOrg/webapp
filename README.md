@@ -20,4 +20,4 @@
 
     http://localhost:8888/api-docs/csye6225-webapp
 
-## create your own env file for mysql
+## create your own env file for MYSQL
