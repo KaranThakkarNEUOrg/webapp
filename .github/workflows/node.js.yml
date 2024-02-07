@@ -1,0 +1,36 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Node
+    runs-on: ubuntu-latest
+
+    # This keyword is used to define the build strategy for your workflow. In this case, it's specifying a matrix strategy
+    strategy:
+      # This sub-keyword defines a matrix build strategy, which allows you to run your job in multiple configurations
+      matrix:
+        # This sub-keyword defines the Node.js version to use for the job
+        node-version: [18.x]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Use ${{matrix.node-version}} to setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
