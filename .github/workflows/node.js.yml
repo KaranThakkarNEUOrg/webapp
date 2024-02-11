@@ -46,7 +46,7 @@ jobs:
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -h localhost -u${{secrets.DB_USER}} -p"${{ secrets.DB_ROOT_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS ${{secrets.DB_NAME}};' || exit 1
+          mysql -h 127.0.0.1 -u karan -p"${{ secrets.DB_ROOT_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS ${{secrets.DB_NAME}};' || exit 1
 
       - name: Run tests
         run: npm test
