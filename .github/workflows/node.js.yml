@@ -21,6 +21,7 @@ jobs:
           MYSQL_DATABASE: ${{secrets.MYSQL_DATABASENAME }}
           MYSQL_USER: ${{secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_HOSTNAME: ${{secrets.MYSQL_HOSTNAME}}
         ports:
           - 3306:3306
 
@@ -42,6 +43,15 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Create .env with Github Secrets and run script
+        run: |
+          touch .env
+          echo MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}
+          echo MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}
+          echo MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}
+          echo MYSQL_USERNAME=${{secrets.MYSQL_USER}}
+          echo SALT_ROUNDS=10
 
       - name: Set up MySQL
         run: |
