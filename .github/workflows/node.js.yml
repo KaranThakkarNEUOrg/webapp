@@ -17,7 +17,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
           MYSQL_DATABASE: ${{secrets.MYSQL_DATABASENAME }}
           MYSQL_USER: ${{secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
@@ -46,7 +46,7 @@ jobs:
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -h 127.0.0.1 -u root -p"${{ secrets.MYSQL_PASSWORD }}" -e "CREATE USER '${{ secrets.MYSQL_USERNAME }}'@'localhost' IDENTIFIED BY '${{ secrets.MYSQL_PASSWORD }}'; GRANT ALL PRIVILEGES ON *.* TO '${{ secrets.MYSQL_USERNAME }}'@'localhost';" || exit 1
+          mysql -h 127.0.0.1 -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e "CREATE USER '${{ secrets.MYSQL_USERNAME }}'@'localhost' IDENTIFIED BY '${{ secrets.MYSQL_PASSWORD }}'; GRANT ALL PRIVILEGES ON *.* TO '${{ secrets.MYSQL_USERNAME }}'@'localhost';" || exit 1
           mysql -h 127.0.0.1 -u${{ secrets.MYSQL_USERNAME }} -p"${{ secrets.MYSQL_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};' || exit 1
 
       - name: Run tests
