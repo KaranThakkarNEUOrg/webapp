@@ -13,6 +13,16 @@ jobs:
     name: Node
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ${{secrets.DB_PASSWORD}}
+          MYSQL_DATABASE: ${{secrets.DB_NAME}}
+          MYSQL_USER: ${{secrets.DB_USER}}
+        ports:
+          - 3306:3306
+
     # This keyword is used to define the build strategy for your workflow. In this case, it's specifying a matrix strategy
     strategy:
       # This sub-keyword defines a matrix build strategy, which allows you to run your job in multiple configurations
@@ -34,3 +44,8 @@ jobs:
 
       - name: Run tests
         run: npm test
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_NAME }}
