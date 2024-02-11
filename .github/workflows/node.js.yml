@@ -50,7 +50,7 @@ jobs:
           echo MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}
           echo MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}
           echo MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}
-          echo MYSQL_USERNAME=${{secrets.MYSQL_USER}}
+          echo MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}
           echo SALT_ROUNDS=10
 
       - name: Set up MySQL
