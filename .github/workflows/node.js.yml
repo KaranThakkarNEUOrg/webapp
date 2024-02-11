@@ -19,7 +19,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_ROOT_PASSWORD }}
           MYSQL_DATABASE: ${{secrets.DB_NAME }}
-          MYSQL_USER: ${{secrets.DB_USER }}
           MYSQL_PASSWORD: ${{ secrets.DB_USER_PASSWORD }}
         ports:
           - 3306:3306
@@ -46,7 +45,7 @@ jobs:
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -h localhost -u${{secrets.DB_USER}} -p"${{ secrets.DB_ROOT_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS cloud_assignment02;' || exit 1
+          mysql -h localhost -u${{secrets.DB_USER}} -p"${{ secrets.DB_ROOT_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS ${{secrets.DB_NAME}};' || exit 1
 
       - name: Run tests
         run: npm test
