@@ -12,7 +12,7 @@ const healthzRouter = require("./api/routes/healthz");
 
 // App level variables initialization
 const app = express();
-const port = process.env.PORT || 8888;
+const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
 

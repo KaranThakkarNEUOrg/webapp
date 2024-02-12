@@ -22,6 +22,8 @@ jobs:
           MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_HOSTNAME: ${{secrets.MYSQL_HOSTNAME}}
+        ports:
+          - 3306:3306
 
     # This keyword is used to define the build strategy for your workflow. In this case, it's specifying a matrix strategy
     strategy:
