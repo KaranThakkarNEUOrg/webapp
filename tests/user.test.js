@@ -9,8 +9,8 @@ describe("User APIs", () => {
   beforeAll(async () => {
     try {
       await sequelize.authenticate();
-      await sequelize.sync({ force: true });
-      server = app.listen(process.env.PORT || 8888);
+      await sequelize.sync({ force: false });
+      server = app.listen(7000);
       console.log("Connection has been established successfully.");
     } catch (error) {
       console.error("Unable to connect to the database:", error);
