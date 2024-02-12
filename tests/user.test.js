@@ -5,6 +5,16 @@ const sequelize = require("../api/config/database");
 require("dotenv").config();
 
 describe("User APIs", () => {
+  beforeAll(async () => {
+    try {
+      await sequelize.authenticate();
+      await sequelize.sync({ force: true });
+      console.log("Connection has been established successfully.");
+    } catch (error) {
+      console.error("Unable to connect to the database:", error);
+    }
+  });
+
   afterAll(async () => {
     await User.destroy({ where: {} });
     await sequelize.close();
@@ -12,10 +22,6 @@ describe("User APIs", () => {
 
   describe("POST /v1/user", () => {
     it("should create a new user", async () => {
-      // select users from table
-      const users = await User.findAll();
-      console.log("users", users);
-
       const dummyData = {
         first_name: "Karan",
         last_name: "Thakkar",
