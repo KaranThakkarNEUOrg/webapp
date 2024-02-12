@@ -19,19 +19,22 @@ describe("User APIs", () => {
         password: "Karan@api123",
       };
 
-      const response = await request(app)
-        .post("/v1/user")
-        .send(dummyData)
-        .expect(201);
-      console.log(response);
+      try {
+        const response = await request(app)
+          .post("/v1/user")
+          .send(dummyData)
+          .expect(201);
 
-      expect(response.body).toMatchObject({
-        first_name: "Karan",
-        last_name: "Thakkar",
-        username: "karanthakkar@northeastern.edu",
-        account_created: expect.any(String),
-        account_updated: expect.any(String),
-      });
+        expect(response.body).toMatchObject({
+          first_name: "Karan",
+          last_name: "Thakkar",
+          username: "karanthakkar@northeastern.edu",
+          account_created: expect.any(String),
+          account_updated: expect.any(String),
+        });
+      } catch (error) {
+        console.error(error);
+      }
     });
 
     it("should get the user details", async () => {

@@ -38,20 +38,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Create .env with Github Secrets and run script
-        run: |
-          touch .env
-          echo MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}
-          echo MYSQL_PASSWORD=${{secrets.MYSQL_PASSWORD}}
-          echo MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}
-          echo MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}
-          echo SALT_ROUNDS=10
-
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
-          mysql -uroot -h127.0.0.1 -proot -e "USE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+          mysql -u${{secrets.MYSQL_USERNAME}} -h${{secrets.MYSQL_HOSTNAME}} -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+          mysql -u${{secrets.MYSQL_USERNAME}} -h${{secrets.MYSQL_HOSTNAME}} -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "USE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
 
       - name: Run tests
         env:
