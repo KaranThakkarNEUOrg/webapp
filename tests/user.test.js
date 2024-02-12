@@ -23,6 +23,7 @@ describe("User APIs", () => {
         .post("/v1/user")
         .send(dummyData)
         .expect(201);
+      console.log(response);
 
       expect(response.body).toMatchObject({
         first_name: "Karan",
