@@ -56,7 +56,7 @@ jobs:
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -h locahost -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e "CREATE USER '${{ secrets.MYSQL_USERNAME }}'@'' IDENTIFIED BY '${{ secrets.MYSQL_PASSWORD }}'; GRANT ALL PRIVILEGES ON *.* TO '${{ secrets.MYSQL_USERNAME }}'@'%';" || exit 1
+          mysql -h localhost -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e "CREATE USER '${{ secrets.MYSQL_USERNAME }}'@'' IDENTIFIED BY '${{ secrets.MYSQL_PASSWORD }}'; GRANT ALL PRIVILEGES ON *.* TO '${{ secrets.MYSQL_USERNAME }}'@'%';" || exit 1
           mysql -h localhost -u${{ secrets.MYSQL_USERNAME }} -p"${{ secrets.MYSQL_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};' || exit 1
 
       - name: Run tests
