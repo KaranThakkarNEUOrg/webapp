@@ -55,9 +55,11 @@ jobs:
 
       - name: Run tests
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASENAME: ${{secrets.MYSQL_DATABASENAME }}
-          MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_HOSTNAME: ${{secrets.MYSQL_HOSTNAME}}
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASENAME: cloud_assignment02
+          MYSQL_USERNAME: root
+          MYSQL_PASSWORD: root
+          MYSQL_HOSTNAME: 127.0.0.1
+          SALT_ROUNDS: 10
+          PORT: 3306
         run: npm test
