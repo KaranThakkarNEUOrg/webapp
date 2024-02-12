@@ -1,12 +1,13 @@
 const request = require("supertest");
 const app = require("../index");
 const User = require("../api/models/user");
-const bcrypt = require("bcrypt");
+const sequelize = require("../api/config/database");
 require("dotenv").config();
 
 describe("User APIs", () => {
   afterAll(async () => {
     await User.destroy({ where: {} });
+    await sequelize.close();
   });
 
   describe("POST /v1/user", () => {
