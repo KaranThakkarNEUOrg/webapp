@@ -61,5 +61,5 @@ jobs:
           MYSQL_PASSWORD: root
           MYSQL_HOSTNAME: 127.0.0.1
           SALT_ROUNDS: 10
-          PORT: 3306
+          PORT: 8888
         run: npm test
