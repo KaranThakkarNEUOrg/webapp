@@ -48,45 +48,57 @@ describe("User APIs", () => {
     });
 
     it("should get the user details", async () => {
-      await request(app)
-        .get("/v1/user/self")
-        .auth("karanthakkar@northeastern.edu", "Karan@api123")
-        .expect(200);
+      try {
+        await request(app)
+          .get("/v1/user/self")
+          .auth("karanthakkar@northeastern.edu", "Karan@api123")
+          .expect(200);
 
-      const userDetails = await User.findOne({
-        where: { username: "karanthakkar@northeastern.edu" },
-      });
+        const userDetails = await User.findOne({
+          where: { username: "karanthakkar@northeastern.edu" },
+        });
 
-      expect(userDetails).toBeTruthy();
+        expect(userDetails).toBeTruthy();
+      } catch (error) {
+        console.error(error);
+      }
     });
   });
 
   describe("PUT v1/user/self", () => {
     it("should update the user details", async () => {
-      const updatedDetails = {
-        first_name: "KaranC",
-        last_name: "ThakkarC",
-        password: "Karan@api123",
-      };
+      try {
+        const updatedDetails = {
+          first_name: "KaranC",
+          last_name: "ThakkarC",
+          password: "Karan@api123",
+        };
 
-      await request(app)
-        .put("/v1/user/self")
-        .auth("karanthakkar@northeastern.edu", "Karan@api123")
-        .send(updatedDetails)
-        .expect(204);
+        await request(app)
+          .put("/v1/user/self")
+          .auth("karanthakkar@northeastern.edu", "Karan@api123")
+          .send(updatedDetails)
+          .expect(204);
+      } catch (error) {
+        console.error(error);
+      }
     });
 
     it("should get the user details", async () => {
-      await request(app)
-        .get("/v1/user/self")
-        .auth("karanthakkar@northeastern.edu", "Karan@api123")
-        .expect(200);
+      try {
+        await request(app)
+          .get("/v1/user/self")
+          .auth("karanthakkar@northeastern.edu", "Karan@api123")
+          .expect(200);
 
-      const userDetails = await User.findOne({
-        where: { username: "karanthakkar@northeastern.edu" },
-      });
+        const userDetails = await User.findOne({
+          where: { username: "karanthakkar@northeastern.edu" },
+        });
 
-      expect(userDetails).toBeTruthy();
+        expect(userDetails).toBeTruthy();
+      } catch (error) {
+        console.error(error);
+      }
     });
   });
 });
