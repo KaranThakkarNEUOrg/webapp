@@ -12,6 +12,10 @@ describe("User APIs", () => {
 
   describe("POST /v1/user", () => {
     it("should create a new user", async () => {
+      // select users from table
+      const users = await User.findAll();
+      console.log("users", users);
+
       const dummyData = {
         first_name: "Karan",
         last_name: "Thakkar",
