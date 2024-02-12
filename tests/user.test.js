@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../index");
 const User = require("../api/models/user");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 describe("User APIs", () => {
   afterAll(async () => {
