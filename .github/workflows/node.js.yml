@@ -57,7 +57,6 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql -h 172.18.0.1 -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e "CREATE USER '${{ secrets.MYSQL_USERNAME }}'@'%' IDENTIFIED BY '${{ secrets.MYSQL_PASSWORD }}'; GRANT ALL PRIVILEGES ON *.* TO '${{ secrets.MYSQL_USERNAME }}'@'%' WITH GRANT OPTION;" || exit 1
-          mysql -h 172.18.0.1 -u root -p"${{ secrets.MYSQL_ROOT_PASSWORD }}" -e 'CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};' || exit 1
 
       - name: Run tests
         run: npm test
