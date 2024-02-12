@@ -4,11 +4,13 @@ const User = require("../api/models/user");
 const sequelize = require("../api/config/database");
 require("dotenv").config();
 
+let server;
 describe("User APIs", () => {
   beforeAll(async () => {
     try {
       await sequelize.authenticate();
       await sequelize.sync({ force: true });
+      server = app.listen(process.env.PORT || 8888);
       console.log("Connection has been established successfully.");
     } catch (error) {
       console.error("Unable to connect to the database:", error);
@@ -16,8 +18,13 @@ describe("User APIs", () => {
   });
 
   afterAll(async () => {
-    await User.destroy({ where: {} });
-    await sequelize.close();
+    try {
+      await User.destroy({ where: {} });
+      await sequelize.close();
+      server.close();
+    } catch (error) {
+      console.error("Unable to close the database:", error);
+    }
   });
 
   describe("POST /v1/user", () => {
