@@ -58,7 +58,7 @@ const createUserService = async (req, res) => {
     } else if (error.name == "SequelizeUniqueConstraintError") {
       return res.status(409).json({ error: "Username already exists" });
     }
-    return res.status(400).end();
+    return res.status(400).json({ error: error });
   }
 };
 
