@@ -64,7 +64,7 @@ describe("User APIs", () => {
       try {
         await request(server)
           .put("/v1/user/self")
-          .auth(dummyData.username, dummyData.password)
+          .auth(dummyData.username, "dummyData.password")
           .send(updatedDetails)
           .expect(204);
       } catch (error) {
