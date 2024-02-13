@@ -1,30 +1,11 @@
 const request = require("supertest");
-const app = require("../index");
+const server = require("../index");
 const User = require("../api/models/user");
 const sequelize = require("../api/config/database");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 describe("User APIs", () => {
-  beforeAll(async () => {
-    try {
-      await sequelize.authenticate();
-      await sequelize.sync({ force: false });
-      console.log("Connection has been established successfully.");
-    } catch (error) {
-      console.error("Unable to connect to the database:", error);
-    }
-  });
-
-  afterAll(async () => {
-    try {
-      await User.destroy({ where: {} });
-      await sequelize.close();
-    } catch (error) {
-      console.error("Unable to close the database:", error);
-    }
-  });
-
   const dummyData = {
     first_name: "Karan",
     last_name: "Thakkar",
@@ -35,7 +16,7 @@ describe("User APIs", () => {
   describe("POST /v1/user", () => {
     it("should create a new user", async () => {
       try {
-        const response = await request(app)
+        const response = await request(server)
           .post("/v1/user")
           .send(dummyData)
           .expect(201);
@@ -47,6 +28,7 @@ describe("User APIs", () => {
           account_created: expect.any(String),
           account_updated: expect.any(String),
         });
+        return;
       } catch (error) {
         console.error(error);
       }
@@ -54,7 +36,7 @@ describe("User APIs", () => {
 
     it("should get the user details", async () => {
       try {
-        await request(app)
+        await request(server)
           .get("/v1/user/self")
           .auth(dummyData.username, dummyData.password)
           .expect(200);
@@ -64,6 +46,7 @@ describe("User APIs", () => {
         });
 
         expect(userDetails).toBeTruthy();
+        return;
       } catch (error) {
         console.error(error);
       }
@@ -79,7 +62,7 @@ describe("User APIs", () => {
 
     it("should update the user details", async () => {
       try {
-        await request(app)
+        return await request(server)
           .put("/v1/user/self")
           .auth(dummyData.username, dummyData.password)
           .send(updatedDetails)
@@ -91,7 +74,7 @@ describe("User APIs", () => {
 
     it("should get the user details", async () => {
       try {
-        const response = await request(app)
+        const response = await request(server)
           .get("/v1/user/self")
           .auth(dummyData.username, updatedDetails.password)
           .expect(200);
@@ -114,9 +97,29 @@ describe("User APIs", () => {
           account_created: expect.any(String),
           account_updated: expect.any(String),
         });
+        return;
       } catch (error) {
         console.error(error);
       }
     });
   });
+});
+
+beforeAll(async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync({ force: false });
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+});
+
+afterAll(async () => {
+  try {
+    await User.destroy({ where: {}, truncate: true });
+    await sequelize.close();
+  } catch (error) {
+    console.error("Unable to close the database:", error);
+  }
 });

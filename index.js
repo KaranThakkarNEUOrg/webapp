@@ -1,5 +1,6 @@
 // Package imports
 const express = require("express");
+const app = express();
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const cors = require("cors");
@@ -11,7 +12,6 @@ const userRouter = require("./api/routes/user");
 const healthzRouter = require("./api/routes/healthz");
 
 // App level variables initialization
-const app = express();
 const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
@@ -67,8 +67,8 @@ app.use(async (req, res, next) => {
 app.use("/v1/user", userRouter);
 app.use("/healthz", healthzRouter);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-module.exports = app;
+module.exports = server;

@@ -4,15 +4,9 @@
   "description": "Creating an Health Check API endpoint and connecting to the database.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit",
     "start": "node index.js",
     "dev": "nodemon index.js"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "<rootDir>/**/tests/**/*.test.js"
-    ]
   },
   "keywords": [
     "MySQL",
