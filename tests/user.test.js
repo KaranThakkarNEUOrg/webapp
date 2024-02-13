@@ -28,9 +28,9 @@ describe("User APIs", () => {
           account_created: expect.any(String),
           account_updated: expect.any(String),
         });
-        return;
       } catch (error) {
         console.error(error);
+        throw error;
       }
     });
 
@@ -46,9 +46,9 @@ describe("User APIs", () => {
         });
 
         expect(userDetails).toBeTruthy();
-        return;
       } catch (error) {
         console.error(error);
+        throw error;
       }
     });
   });
@@ -62,13 +62,14 @@ describe("User APIs", () => {
 
     it("should update the user details", async () => {
       try {
-        return await request(server)
+        await request(server)
           .put("/v1/user/self")
           .auth(dummyData.username, dummyData.password)
           .send(updatedDetails)
           .expect(204);
       } catch (error) {
         console.error(error);
+        throw error;
       }
     });
 
@@ -97,9 +98,9 @@ describe("User APIs", () => {
           account_created: expect.any(String),
           account_updated: expect.any(String),
         });
-        return;
       } catch (error) {
         console.error(error);
+        throw error;
       }
     });
   });
@@ -112,6 +113,7 @@ beforeAll(async () => {
     console.log("Connection has been established successfully.");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
+    throw error;
   }
 });
 
@@ -121,5 +123,6 @@ afterAll(async () => {
     await sequelize.close();
   } catch (error) {
     console.error("Unable to close the database:", error);
+    throw error;
   }
 });
