@@ -52,7 +52,7 @@ jobs:
           MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME}}
           SALT_ROUNDS: ${{secrets.SALT_ROUNDS}}
           PORT: ${{secrets.PORT}}
-        run: npm test .\tests\user.test.js
+        run: npm run test-mysql
 
       - name: Delete Database
         run: |
