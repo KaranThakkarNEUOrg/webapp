@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../index");
 const User = require("../api/models/user");
 const sequelize = require("../api/config/database");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 describe("User APIs", () => {
@@ -24,15 +25,15 @@ describe("User APIs", () => {
     }
   });
 
+  const dummyData = {
+    first_name: "Karan",
+    last_name: "Thakkar",
+    username: "karanthakkar@northeastern.edu",
+    password: "Karan@api123",
+  };
+
   describe("POST /v1/user", () => {
     it("should create a new user", async () => {
-      const dummyData = {
-        first_name: "Karan",
-        last_name: "Thakkar",
-        username: "karanthakkar@northeastern.edu",
-        password: "Karan@api123",
-      };
-
       try {
         const response = await request(app)
           .post("/v1/user")
@@ -40,9 +41,9 @@ describe("User APIs", () => {
           .expect(201);
 
         expect(response.body).toMatchObject({
-          first_name: "Karan",
-          last_name: "Thakkar",
-          username: "karanthakkar@northeastern.edu",
+          first_name: dummyData.first_name,
+          last_name: dummyData.last_name,
+          username: dummyData.username,
           account_created: expect.any(String),
           account_updated: expect.any(String),
         });
@@ -55,11 +56,11 @@ describe("User APIs", () => {
       try {
         await request(app)
           .get("/v1/user/self")
-          .auth("karanthakkar@northeastern.edu", "Karan@api123")
+          .auth(dummyData.username, dummyData.password)
           .expect(200);
 
         const userDetails = await User.findOne({
-          where: { username: "karanthakkar@northeastern.edu" },
+          where: { username: dummyData.username },
         });
 
         expect(userDetails).toBeTruthy();
@@ -70,17 +71,17 @@ describe("User APIs", () => {
   });
 
   describe("PUT v1/user/self", () => {
+    const updatedDetails = {
+      first_name: "KaranC",
+      last_name: "ThakkarC",
+      password: "KaranT@api123",
+    };
+
     it("should update the user details", async () => {
       try {
-        const updatedDetails = {
-          first_name: "KaranC",
-          last_name: "ThakkarC",
-          password: "Karan@api123",
-        };
-
         await request(app)
           .put("/v1/user/self")
-          .auth("karanthakkar@northeastern.edu", "Karan@api123")
+          .auth(dummyData.username, dummyData.password)
           .send(updatedDetails)
           .expect(204);
       } catch (error) {
@@ -90,16 +91,29 @@ describe("User APIs", () => {
 
     it("should get the user details", async () => {
       try {
-        await request(app)
+        const response = await request(app)
           .get("/v1/user/self")
-          .auth("karanthakkar@northeastern.edu", "Karan@api123")
+          .auth(dummyData.username, updatedDetails.password)
           .expect(200);
 
         const userDetails = await User.findOne({
           where: { username: "karanthakkar@northeastern.edu" },
         });
 
-        expect(userDetails).toBeTruthy();
+        const isPasswordValid = bcrypt.compareSync(
+          updatedDetails.password,
+          userDetails.password
+        );
+
+        expect(isPasswordValid).toBe(true);
+
+        expect(response.body).toMatchObject({
+          first_name: updatedDetails.first_name,
+          last_name: updatedDetails.last_name,
+          username: dummyData.username,
+          account_created: expect.any(String),
+          account_updated: expect.any(String),
+        });
       } catch (error) {
         console.error(error);
       }
