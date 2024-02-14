@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-node": "jest ./tests/hello.test.js",
-    "test-mysql": "jest ./tests/user.test.js --forceExit",
+    "test-mysql": "exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
