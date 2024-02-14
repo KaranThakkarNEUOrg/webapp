@@ -38,7 +38,7 @@ describe("User APIs", () => {
       try {
         await request(server)
           .get("/v1/user/self")
-          .auth(dummyData.username, dummyData.password)
+          .auth(dummyData.username, " dummyData.password")
           .expect(200);
 
         const userDetails = await User.findOne({
