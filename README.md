@@ -107,3 +107,6 @@ scp -i ~/.ssh/digital_ocean_ssh D:\Desktop\CloudAssignments\Assignment02\assignm
 ```
 unzip <filename> -d <destination path>
 ```
+
+
+##DEMO
