@@ -13,12 +13,6 @@ jobs:
     name: Mysql
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:5.7
-        ports:
-          - 3306:3306
-
     # This keyword is used to define the build strategy for your workflow. In this case, it's specifying a matrix strategy
     strategy:
       # This sub-keyword defines a matrix build strategy, which allows you to run your job in multiple configurations
@@ -38,11 +32,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install MySQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-server
+
       - name: Set up MySQL
         run: |
-          sudo /etc/init.d/mysql start
-          mysql -u${{secrets.MYSQL_USERNAME}} -h${{secrets.MYSQL_HOSTNAME}} -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
-          mysql -u${{secrets.MYSQL_USERNAME}} -h${{secrets.MYSQL_HOSTNAME}} -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "USE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+          sudo systemctl start mysql
+          mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+          mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "USE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
 
       - name: Run tests
         env:
@@ -56,4 +55,4 @@ jobs:
 
       - name: Delete Database
         run: |
-          mysql -u${{secrets.MYSQL_USERNAME}} -h${{secrets.MYSQL_HOSTNAME}} -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "DROP DATABASE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+          mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "DROP DATABASE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
