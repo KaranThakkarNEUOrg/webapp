@@ -18,7 +18,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
           service_account_key: ${{ secrets.GCP_PACKER_CREDENTIALS }}
-          project_id: csye6225-dev-414623
+          project_id: ${{secrets.GCP_PROJECT_ID}}
 
       - name: Get credentials file path
         run: echo $GOOGLE_APPLICATION_CREDENTIALS
@@ -45,7 +45,8 @@ jobs:
 
       - name: Run packer validate
         run: |
-          FILE="packer/setup.pkr.hcl"
+          FILE="setup.pkr.hcl"
+          cd packer
           packer validate -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" $FILE
           if [ $? -ne 0 ]; then
               echo "Packer file is not valid. Please fix the template."
