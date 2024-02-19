@@ -1,0 +1,40 @@
+name: Packer
+
+on:
+  pull_request:
+    paths:
+      - "**.pkr.hcl"
+
+jobs:
+  packer-check:
+    name: Packer CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Packer
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install packer
+
+      - name: Run packer fmt
+        run: |
+          FILE="packer/setup.pkr.hcl"
+          packer fmt -check $FILE
+          if [ $? -ne 0 ]; then
+              echo "Packer file is not correctly formatted. Please run 'packer fmt'"
+              exit 1
+          fi
+
+      - name: Run packer validate
+        run: |
+          FILE="packer/setup.pkr.hcl"
+          packer validate $FILE
+          if [ $? -ne 0 ]; then
+              echo "Packer file is not valid. Please fix the template."
+              exit 1
+          fi
+          done
