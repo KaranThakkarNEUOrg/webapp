@@ -28,7 +28,6 @@ jobs:
               echo "Packer file is not correctly formatted. Please run 'packer fmt'"
               exit 1
           fi
-          done
 
       - name: Run packer validate
         run: |
@@ -38,4 +37,3 @@ jobs:
               echo "Packer file is not valid. Please fix the template."
               exit 1
           fi
-          done
