@@ -35,11 +35,9 @@ jobs:
           fi
 
       - name: Run packer validate
-        env:
-          GCP_PACKER_CREDENTIALS: ${{ secrets.GCP_PACKER_CREDENTIALS }}
         run: |
           FILE="packer/setup.pkr.hcl"
-          packer validate $FILE
+          packer validate -var "GCP_PACKER_CREDENTIALS=${{secrets.GCP_PACKER_CREDENTIALS}}" $FILE
           if [ $? -ne 0 ]; then
               echo "Packer file is not valid. Please fix the template."
               exit 1
