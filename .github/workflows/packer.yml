@@ -36,7 +36,7 @@ jobs:
 
       - name: Run packer validate
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_PACKER_CREDENTIALS }}
+          GCP_PACKER_CREDENTIALS: ${{ secrets.GCP_PACKER_CREDENTIALS }}
         run: |
           FILE="packer/setup.pkr.hcl"
           packer validate $FILE
