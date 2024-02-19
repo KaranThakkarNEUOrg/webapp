@@ -26,10 +26,10 @@ build {
 
   provisioner "shell" {
     inline = [
-    "sudo dnf install mysql-server -y",
-    "sudo systemctl start mysqld.service",
-    "sudo systemctl enable mysqld",
-    "dnf module install nodejs:18/common -y"
+      "sudo dnf install mysql-server -y",
+      "sudo systemctl start mysqld.service",
+      "sudo systemctl enable mysqld",
+      "dnf module install nodejs:18/common -y"
     ]
   }
 
