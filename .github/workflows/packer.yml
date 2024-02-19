@@ -46,7 +46,7 @@ jobs:
       - name: Run packer validate
         run: |
           FILE="packer/setup.pkr.hcl"
-          packer validate $FILE
+          packer validate -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" $FILE
           if [ $? -ne 0 ]; then
               echo "Packer file is not valid. Please fix the template."
               exit 1
