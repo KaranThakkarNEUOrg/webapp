@@ -29,7 +29,7 @@ build {
     destination = "/tmp/mysql.sh"
   }
 
-   provisioner "file" {
+  provisioner "file" {
     source      = "./nodejs.sh"
     destination = "/tmp/nodejs.sh"
   }
