@@ -2,8 +2,7 @@ name: Packer
 
 on:
   pull_request:
-    paths:
-      - "**.pkr.hcl"
+    branches: [main]
   workflow_dispatch:
 
 jobs:
