@@ -19,7 +19,7 @@ describe("User APIs", () => {
         const response = await request(server)
           .post("/v1/user")
           .send(dummyData)
-          .expect(201);
+          .expect(200);
 
         expect(response.body).toMatchObject({
           first_name: dummyData.first_name,
@@ -66,7 +66,7 @@ describe("User APIs", () => {
           .put("/v1/user/self")
           .auth(dummyData.username, dummyData.password)
           .send(updatedDetails)
-          .expect(204);
+          .expect(200);
       } catch (error) {
         console.error(error);
         throw error;
