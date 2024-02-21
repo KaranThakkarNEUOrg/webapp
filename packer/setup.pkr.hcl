@@ -34,31 +34,30 @@ build {
     ]
   }
 
+  // provisioner "file" {
+  //   source      = "./mysql.sh"
+  //   destination = "/tmp/mysql.sh"
+  // }
 
-  provisioner "file" {
-    source      = "./mysql.sh"
-    destination = "/tmp/mysql.sh"
-  }
+  // provisioner "file" {
+  //   source      = "./nodejs.sh"
+  //   destination = "/tmp/nodejs.sh"
+  // }
 
-  provisioner "file" {
-    source      = "./nodejs.sh"
-    destination = "/tmp/nodejs.sh"
-  }
+  // provisioner "file" {
+  //   source      = "./permissions.sh"
+  //   destination = "/tmp/permissions.sh"
+  // }
 
-  provisioner "file" {
-    source      = "./permissions.sh"
-    destination = "/tmp/permissions.sh"
-  }
+  // provisioner "file" {
+  //   source      = "./webapp-installation.sh"
+  //   destination = "/tmp/webapp-installation.sh"
+  // }
 
-  provisioner "file" {
-    source      = "./webapp-installation.sh"
-    destination = "/tmp/webapp-installation.sh"
-  }
-
-  provisioner "file" {
-    source      = "./user-permission.sh"
-    destination = "/tmp/user-permission.sh"
-  }
+  // provisioner "file" {
+  //   source      = "./user-permission.sh"
+  //   destination = "/tmp/user-permission.sh"
+  // }
 
   provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/webapp.zip"
