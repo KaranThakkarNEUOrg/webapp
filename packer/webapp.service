@@ -13,8 +13,8 @@ Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
 User=csye6225
 Group=csye6225
-WorkingDirectory=/home/packer/webapp/
-ExecStart=/usr/bin/node /home/packer/webapp/index.js
+WorkingDirectory=/opt/webapp/
+ExecStart=/usr/bin/node /opt/webapp/index.js
 Restart=always
 RestartSec=3
 StandardOutput=syslog
