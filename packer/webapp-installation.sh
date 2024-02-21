@@ -2,8 +2,8 @@
 
 cd /
 sudo dnf install unzip -y
-sudo unzip /tmp/webapp.zip -d /home/packer/webapp/
-cd /home/packer/webapp/
+sudo unzip /tmp/webapp.zip -d /opt/webapp/
+cd /opt/webapp/
 sudo npm install
 sudo touch .env
 echo "MYSQL_HOSTNAME=localhost" | sudo tee -a .env

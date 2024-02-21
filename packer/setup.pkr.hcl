@@ -66,7 +66,7 @@ build {
 
   provisioner "file" {
     source      = "./webapp.service"
-    destination = "/home/packer/webapp.service"
+    destination = "/opt/webapp/webapp.service"
   }
 
   provisioner "shell" {
