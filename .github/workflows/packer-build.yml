@@ -33,6 +33,9 @@ jobs:
           PORT: ${{secrets.PORT}}
         run: npm run test-mysql
 
+      - name: Zip Node.js application
+        run: npm run zip
+
       - name: Set up Cloud SDK
         uses: google-github-actions/auth@v2
         with:
@@ -52,3 +55,8 @@ jobs:
         run: |
           cd packer
           packer init .
+
+      - name: Build packer file
+        run: |
+          FILE="packer/setup.pkr.hcl"
+          packer build -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" $FILE || exit 1
