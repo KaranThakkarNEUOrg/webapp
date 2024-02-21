@@ -1,5 +1,13 @@
 name: Packer
 
+env:
+  MYSQL_HOSTNAME: ${{secrets.MYSQL_HOSTNAME}}
+  MYSQL_PASSWORD: ${{secrets.MYSQL_ROOT_PASSWORD}}
+  MYSQL_DATABASENAME: ${{secrets.MYSQL_DATABASENAME}}
+  MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME}}
+  SALT_ROUNDS: ${{secrets.SALT_ROUNDS}}
+  PORT: ${{secrets.PORT}}
+
 on:
   pull_request:
     branches: [main]
@@ -52,7 +60,7 @@ jobs:
         run: |
           FILE="setup.pkr.hcl"
           cd packer
-          packer validate -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" $FILE
+          packer validate -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE
           if [ $? -ne 0 ]; then
               echo "Packer file is not valid. Please fix the template."
               exit 1

@@ -3,6 +3,7 @@ Description=Node.js Application
 After=network.target
 
 [Service]
+Type=simple
 User=csye6225
 Group=csye6225
 Environment=MYSQL_HOSTNAME=localhost
