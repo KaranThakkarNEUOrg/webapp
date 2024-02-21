@@ -52,7 +52,7 @@ jobs:
         run: |
           FILE="setup.pkr.hcl"
           cd packer
-          packer validate -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" $FILE
+          packer validate -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" $FILE
           if [ $? -ne 0 ]; then
               echo "Packer file is not valid. Please fix the template."
               exit 1
