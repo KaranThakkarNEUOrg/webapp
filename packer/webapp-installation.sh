@@ -2,7 +2,7 @@
 
 cd /
 sudo dnf install unzip -y
-sudo unzip cd /tmp/packer/webapp.zip -d cd /home/packer/webapp/
+sudo unzip /tmp/packer/webapp.zip -d /home/packer/webapp/
 cd home/packer/webapp/
 sudo npm install
 sudo touch .env
