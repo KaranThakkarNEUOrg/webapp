@@ -8,7 +8,7 @@
     "test-mysql": "jest ./tests/user.test.js --forceExit",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "zip": "zip -r myapp.zip ."
+    "zip": "zip -r webapp.zip . -x \\*node_modules\\* \\*.git\\* \\*.env\\*"
   },
   "keywords": [
     "MySQL",
