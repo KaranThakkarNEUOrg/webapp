@@ -107,3 +107,28 @@ scp -i ~/.ssh/digital_ocean_ssh D:\Desktop\CloudAssignments\Assignment02\assignm
 ```
 unzip <filename> -d <destination path>
 ```
+
+# packer installation [reference](https://www.packer.io/downloads)
+
+# Commands to run packer
+
+Initialize packer file
+
+```
+cd packer
+packer init .\setup.pkr.hcl
+```
+
+Format packer file
+
+```
+cd packer
+packer fmt .\setup.pkr.hcl
+```
+
+Validate packer syntax
+
+```
+cd packer
+packer validate -var "project_id=<project_id>" -var "credentials=<json_file_path>" .\setup.pkr.hcl
+```

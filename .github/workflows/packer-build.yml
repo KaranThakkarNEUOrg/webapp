@@ -1,0 +1,51 @@
+name: Packer-Build
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  packer-check:
+    name: Packer Build CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up MySQL
+        run: |
+          sudo systemctl start mysql
+          mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+          mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "USE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
+
+      - name: Run Nodejs tests
+        env:
+          MYSQL_HOSTNAME: ${{secrets.MYSQL_HOSTNAME}}
+          MYSQL_PASSWORD: ${{secrets.MYSQL_ROOT_PASSWORD}}
+          MYSQL_DATABASENAME: ${{secrets.MYSQL_DATABASENAME}}
+          MYSQL_USERNAME: ${{secrets.MYSQL_USERNAME}}
+          SALT_ROUNDS: ${{secrets.SALT_ROUNDS}}
+          PORT: ${{secrets.PORT}}
+        run: npm run test-mysql
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_PACKER_CREDENTIALS }}
+          project_id: ${{secrets.GCP_PROJECT_ID}}
+
+      - name: Get credentials file path
+        run: echo $GOOGLE_APPLICATION_CREDENTIALS
+
+      - name: Install Packer
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install packer
+
+      - name: Initialize Packer
+        run: |
+          cd packer
+          packer init .
