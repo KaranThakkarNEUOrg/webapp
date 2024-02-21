@@ -1,0 +1,16 @@
+[Unit]
+Description=Node.js Application
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/packer/webapp/index.js
+WorkingDirectory=/home/packer/webapp/
+Restart=always
+User=csye6225
+Group=csye6225
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+Environment=PORT=8888
+
+[Install]
+WantedBy=multi-user.target
