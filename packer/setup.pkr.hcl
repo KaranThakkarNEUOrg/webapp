@@ -75,14 +75,14 @@ build {
   // }
 
   provisioner "shell" {
-    scripts = ["./mysql.sh", "./nodejs.sh", "./permissions.sh", "./webapp-installation.sh", "./user-permission.sh"]
+    scripts = ["./mysql.sh", "./nodejs.sh", "./permissions.sh", "./webapp-installation.sh","./webapp-service.sh", "./user-permission.sh"]
     environment_vars = [
-      "MYSQL_PASSWORD=${var.MYSQL_PASSWORD}"
-      "MYSQL_DATABASENAME=${var.MYSQL_DATABASENAME}"
-      "MYSQL_USERNAME=${var.MYSQL_USERNAME}"
-      "MYSQL_HOSTNAME=${var.MYSQL_HOSTNAME}"
-      "SALT_ROUNDS=${var.SALT_ROUNDS}"
-      "PORT=${var.PORT}"
+      "MYSQL_PASSWORD=${var.MYSQL_PASSWORD}",
+      "MYSQL_DATABASENAME=${var.MYSQL_DATABASENAME}",
+      "MYSQL_USERNAME=${var.MYSQL_USERNAME}",
+      "MYSQL_HOSTNAME=${var.MYSQL_HOSTNAME}",
+      "SALT_ROUNDS=${var.SALT_ROUNDS}",
+      "PORT=${var.PORT}",
     ]
   }
 
