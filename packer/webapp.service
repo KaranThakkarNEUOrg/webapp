@@ -3,22 +3,18 @@ Description=Node.js Application
 After=network.target
 
 [Service]
+User=csye6225
+Group=csye6225
 Environment=MYSQL_HOSTNAME=localhost
 Environment=MYSQL_PASSWORD=root
 Environment=MYSQL_DATABASENAME=cloud_assignment02
 Environment=MYSQL_USERNAME=root
 Environment=SALT_ROUNDS=10
 Environment=PORT=8888
-Environment=PATH=/usr/bin:/usr/local/bin
-Environment=NODE_ENV=production
-User=csye6225
-Group=csye6225
 WorkingDirectory=/opt/webapp/
 ExecStart=/usr/bin/node /opt/webapp/index.js
-Restart=always
+Restart=on-failure
 RestartSec=3
-StandardOutput=syslog
-StandardError=syslog
 
 [Install]
 WantedBy=multi-user.target

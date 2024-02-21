@@ -9,4 +9,5 @@ sudo chmod 700 /opt/webapp/
 sudo chmod 700 /etc/systemd/system/
 echo "csye6225 ALL=(ALL:ALL) NOPASSWD: /bin/systemctl" | sudo EDITOR='tee -a' visudo
 sudo systemctl daemon-reload
-sudo systemctl enable webapp.service
+sudo systemctl start webapp
+sudo systemctl enable webapp
