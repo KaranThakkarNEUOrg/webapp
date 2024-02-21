@@ -38,7 +38,7 @@ jobs:
       - name: Zip Node.js application
         run: |
           npm run zip
-          echo $(sudo find / -type f -name "webapp.zip")
+          echo $(find / -type f -name "webapp.zip")
 
       - name: Set up Cloud SDK
         uses: google-github-actions/auth@v2
