@@ -20,6 +20,9 @@ jobs:
           mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
           mysql -u${{secrets.MYSQL_USERNAME}}  -p${{secrets.MYSQL_ROOT_PASSWORD}} -e "USE ${{ secrets.MYSQL_DATABASENAME }};" || exit 1
 
+      - name: Install Nodejs dependencies
+        run: npm install
+
       - name: Run Nodejs tests
         env:
           MYSQL_HOSTNAME: ${{secrets.MYSQL_HOSTNAME}}
