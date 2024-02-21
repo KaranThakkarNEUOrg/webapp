@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Environment=MYSQL_HOSTNAME=localhost
-Environment=MYSQL_PASSWORD=Karan@mysql001
+Environment=MYSQL_PASSWORD=root
 Environment=MYSQL_DATABASENAME=cloud_assignment02
 Environment=MYSQL_USERNAME=root
 Environment=SALT_ROUNDS=10
