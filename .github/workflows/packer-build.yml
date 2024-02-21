@@ -2,7 +2,7 @@ name: Packer-Build
 
 on:
   pull_request:
-    types: [closed]
+    # types: [closed]
     branches: [main]
   workflow_dispatch:
 
@@ -10,7 +10,7 @@ jobs:
   packer-check:
     name: Packer Build CI
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
 
     steps:
       - name: Checkout code
@@ -38,8 +38,6 @@ jobs:
       - name: Zip Node.js application
         run: |
           npm run zip
-          echo $(pwd)
-          echo $(ls -l)
 
       - name: Set up Cloud SDK
         uses: google-github-actions/auth@v2
