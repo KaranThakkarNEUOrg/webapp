@@ -2,6 +2,7 @@ name: Packer-Build
 
 on:
   pull_request:
+    types: [closed]
     branches: [main]
   workflow_dispatch:
 
@@ -9,6 +10,7 @@ jobs:
   packer-check:
     name: Packer Build CI
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
 
     steps:
       - name: Checkout code
