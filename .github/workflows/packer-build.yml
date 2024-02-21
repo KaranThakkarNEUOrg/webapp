@@ -59,8 +59,8 @@ jobs:
           cd packer
           packer init .
 
-      # - name: Build packer file
-      #   run: |
-      #     FILE="setup.pkr.hcl"
-      #     cd packer
-      #     packer build -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" $FILE || exit 1
+      - name: Build packer file
+        run: |
+          FILE="setup.pkr.hcl"
+          cd packer
+          packer build -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" $FILE || exit 1
