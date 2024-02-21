@@ -55,6 +55,11 @@ build {
     destination = "/tmp/webapp.zip"
   }
 
+  provisioner "file" {
+    source      = "./webapp.service"
+    destination = "/home/packer/webapp.service"
+  }
+
   provisioner "shell" {
     scripts = ["./mysql.sh", "./nodejs.sh", "./permissions.sh", "./webapp-installation.sh","./user-permission.sh"]
     environment_vars = [
