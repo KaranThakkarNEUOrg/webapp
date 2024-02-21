@@ -51,6 +51,16 @@ build {
   }
 
   provisioner "file" {
+    source      = "./webapp-installation.sh"
+    destination = "/tmp/webapp-installation.sh"
+  }
+
+  provisioner "file" {
+    source      = "./user-permission.sh"
+    destination = "/tmp/user-permission.sh"
+  }
+
+  provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/webapp.zip"
     destination = "/tmp/webapp.zip"
   }
