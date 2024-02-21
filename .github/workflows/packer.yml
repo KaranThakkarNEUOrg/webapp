@@ -29,6 +29,10 @@ jobs:
           sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
           sudo apt-get update && sudo apt-get install packer
 
+      - name: Zip Node.js application
+        run: |
+          npm run zip
+
       - name: Initialize Packer
         run: |
           cd packer
