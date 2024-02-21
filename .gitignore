@@ -128,3 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# ignore credentials gcp file
+packer/csye6225-dev-414900-b97b3e17c13a.json

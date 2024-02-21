@@ -52,19 +52,11 @@ build {
 
   provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/webapp.zip"
-    destination = "/home/packer/webapp.zip"
+    destination = "/tmp/packer/webapp.zip"
   }
 
   provisioner "shell" {
-    script = "./mysql.sh"
-  }
-
-  provisioner "shell" {
-    script = "./nodejs.sh"
-  }
-
-  provisioner "shell" {
-    script = "./permissions.sh"
+    script = ["./mysql.sh", "./nodejs.sh", "./permissions.sh","./webapp-installation.sh"]
   }
 
 }
