@@ -50,6 +50,11 @@ build {
     destination = "/tmp/permissions.sh"
   }
 
+  provisioner "file" {
+    source      = "/home/runner/work/webapp/webapp/webapp.zip"
+    destination = "/home/packer/webapp.zip"
+  }
+
   provisioner "shell" {
     script = "./mysql.sh"
   }
