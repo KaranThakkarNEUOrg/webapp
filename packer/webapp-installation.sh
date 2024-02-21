@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /
-sudo apt-get install unzip -y
+sudo dnf install unzip -y
 unzip tmp/packer/webapp.zip -d /home/packer/webapp/
 cd home/packer/webapp/
 npm install
