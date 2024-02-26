@@ -3,15 +3,13 @@
 sudo sh -c 'cat << EOF > /etc/systemd/system/webapp.service
 [Unit]
 Description=Node.js Application
-After=network.target network-online.target
-Wants=network-online.target
+After=network.target
 
 [Service]
 Type=simple
 User=csye6225
 Group=csye6225
 WorkingDirectory=/opt/webapp/
-ExecStartPre=/bin/bash -c "while [ ! -f /opt/finish ]; do sleep 1; done"
 ExecStart=/usr/bin/node /opt/webapp/index.js
 Restart=on-failure
 RestartSec=3
