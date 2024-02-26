@@ -6,6 +6,7 @@ Description=Node.js Application
 After=network.target
 
 [Service]
+EnvironmentFile=/opt/webapp/.env
 Type=simple
 User=csye6225
 Group=csye6225
