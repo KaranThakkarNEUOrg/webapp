@@ -39,14 +39,43 @@ build {
     ]
   }
 
+  // provisioner "file" {
+  //   source      = "./mysql.sh"
+  //   destination = "/tmp/mysql.sh"
+  // }
+
+  // provisioner "file" {
+  //   source      = "./nodejs.sh"
+  //   destination = "/tmp/nodejs.sh"
+  // }
+
+  // provisioner "file" {
+  //   source      = "./permissions.sh"
+  //   destination = "/tmp/permissions.sh"
+  // }
+
+  // provisioner "file" {
+  //   source      = "./webapp-installation.sh"
+  //   destination = "/tmp/webapp-installation.sh"
+  // }
+
+  // provisioner "file" {
+  //   source      = "./user-permission.sh"
+  //   destination = "/tmp/user-permission.sh"
+  // }
 
   provisioner "file" {
     source      = "/home/runner/work/webapp/webapp/webapp.zip"
     destination = "/tmp/webapp.zip"
   }
 
+  // provisioner "file" {
+  //   source      = "./webapp.service"
+  //   destination = "/tmp/webapp.service"
+  // }
+
   provisioner "shell" {
-    scripts = ["./mysql.sh","./nodejs.sh", "./permissions.sh", "./webapp-installation.sh", "./webapp-service.sh", "./user-permission.sh"]
+    scripts = ["./mysql.sh", "./nodejs.sh", "./permissions.sh", "./webapp-installation.sh", "./webapp-service.sh", "./user-permission.sh"]
     environment_vars = [
       "MYSQL_PASSWORD=${var.MYSQL_PASSWORD}",
       "MYSQL_DATABASENAME=${var.MYSQL_DATABASENAME}",
