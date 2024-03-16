@@ -1,10 +1,15 @@
 const mysql = require("mysql2");
+const logger = require("../middleware/logger");
 
 const getHealthStatusService = async () => {
   try {
+    logger.info("getHealthStatusService: Checking database connection");
     await checkDatabaseConnection();
     return;
   } catch (error) {
+    logger.error(
+      `getHealthStatusService: Error checking database connection: ${error}`
+    );
     throw new Error(error);
   }
 };

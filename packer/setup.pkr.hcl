@@ -52,6 +52,7 @@ build {
       "./webapp-installation.sh",
       "./webapp-service.sh",
       "./user-permission.sh",
+      "./ops-agent.sh"
     ]
     environment_vars = [
       "MYSQL_PASSWORD=${var.MYSQL_PASSWORD}",
