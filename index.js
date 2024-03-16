@@ -7,6 +7,7 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const { getHealthStatusService } = require("./api/services/healthz");
+const logger = require("./api/middleware/logger");
 
 const userRouter = require("./api/routes/user");
 const healthzRouter = require("./api/routes/healthz");
@@ -68,7 +69,7 @@ app.use("/v1/user", userRouter);
 app.use("/healthz", healthzRouter);
 
 const server = app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  logger.info(`Server is running on port ${port}`);
 });
 
 module.exports = server;
