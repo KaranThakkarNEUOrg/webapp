@@ -33,6 +33,11 @@ jobs:
       - name: Install Nodejs dependencies
         run: npm install
 
+      - name: Create log directory
+        run: |
+          sudo mkdir -p /var/log/webapp/
+          sudo chown runner:runner /var/log/webapp/
+
       - name: Run Nodejs tests
         run: npm run test-mysql
 
