@@ -3,12 +3,15 @@ const logger = require("../middleware/logger");
 
 const getHealthStatusService = async () => {
   try {
-    logger.info("getHealthStatusService: Checking database connection");
+    logger.info("getHealthStatusService: Checking database connection", {
+      severity: "INFO",
+    });
     await checkDatabaseConnection();
     return;
   } catch (error) {
     logger.error(
-      `getHealthStatusService: Error checking database connection: ${error}`
+      `getHealthStatusService: Error checking database connection: ${error}`,
+      { severity: "ERROR" }
     );
     throw new Error(error);
   }

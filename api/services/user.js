@@ -7,7 +7,7 @@ const passwordRegex =
 
 const getUserService = async (req, res) => {
   try {
-    logger.info("getUserService: Fetching user details");
+    logger.info("getUserService: Fetching user details", { severity: "INFO" });
     return res.status(200).json({
       id: req.user.id,
       first_name: req.user.first_name,
@@ -17,14 +17,16 @@ const getUserService = async (req, res) => {
       account_updated: req.user.account_updated,
     });
   } catch (error) {
-    logger.error(`getUserService: Error fetching user details: ${error}`);
+    logger.error(`getUserService: Error fetching user details: ${error}`, {
+      severity: "ERROR",
+    });
     return res.status(400).end();
   }
 };
 
 const createUserService = async (req, res) => {
   try {
-    logger.info("createUserService: Creating new user");
+    logger.info("createUserService: Creating new user", { severity: "INFO" });
 
     let userDetails = req.body;
     const allowedFields = ["first_name", "last_name", "password", "username"];
@@ -33,17 +35,21 @@ const createUserService = async (req, res) => {
     );
 
     if (additionalFields.length > 0) {
-      logger.error(`createUserService: Invalid fields [${additionalFields}]`);
+      logger.error(`createUserService: Invalid fields [${additionalFields}]`, {
+        severity: "ERROR",
+      });
       return res.status(400).json(`Invalid fields [${additionalFields}]`);
     }
 
     if (!userDetails.password.match(passwordRegex)) {
-      logger.error(`createUserService: Invalid password`);
+      logger.error(`createUserService: Invalid password`, {
+        severity: "ERROR",
+      });
       return res.status(400).json("Invalid password");
     }
 
     // hashing password
-    logger.info("createUserService: Hashing password");
+    logger.info("createUserService: Hashing password", { severity: "INFO" });
     userDetails.password = bcrypt.hashSync(
       userDetails.password,
       +process.env.SALT_ROUNDS
@@ -52,7 +58,9 @@ const createUserService = async (req, res) => {
     // creating new user
     const user = await User.create(userDetails);
 
-    logger.info(`createUserService: User created successfully`);
+    logger.info(`createUserService: User created successfully`, {
+      severity: "INFO",
+    });
 
     return res.status(201).json({
       id: user.id,
@@ -63,7 +71,9 @@ const createUserService = async (req, res) => {
       account_updated: user.account_updated,
     });
   } catch (error) {
-    logger.error(`createUserService: Error creating user: ${error}`);
+    logger.error(`createUserService: Error creating user: ${error}`, {
+      severity: "ERROR",
+    });
     if (error.name == "SequelizeValidationError") {
       return res.status(400).json({ message: error.message });
     } else if (error.name == "SequelizeUniqueConstraintError") {
@@ -75,7 +85,9 @@ const createUserService = async (req, res) => {
 
 const updateUserService = async (req, res) => {
   try {
-    logger.info("updateUserService: Updating user details");
+    logger.info("updateUserService: Updating user details", {
+      severity: "INFO",
+    });
     const { first_name, last_name, password } = req.body;
 
     const allowedFields = ["first_name", "last_name", "password"];
@@ -84,12 +96,16 @@ const updateUserService = async (req, res) => {
     );
 
     if (additionalFields.length > 0) {
-      logger.error(`updateUserService: Invalid fields ${additionalFields}`);
+      logger.error(`updateUserService: Invalid fields ${additionalFields}`, {
+        severity: "ERROR",
+      });
       return res.status(400).json(`Invalid fields ${additionalFields}`);
     }
 
     if (!password.match(passwordRegex)) {
-      logger.error(`updateUserService: Invalid password`);
+      logger.error(`updateUserService: Invalid password`, {
+        severity: "ERROR",
+      });
       return res.status(400).json("Invalid password");
     }
 
@@ -107,11 +123,15 @@ const updateUserService = async (req, res) => {
       }
     );
 
-    logger.info(`updateUserService: User details updated successfully`);
+    logger.info(`updateUserService: User details updated successfully`, {
+      severity: "ERROR",
+    });
 
     return res.status(204).end();
   } catch (error) {
-    logger.error(`updateUserService: Error updating user details: ${error}`);
+    logger.error(`updateUserService: Error updating user details: ${error}`, {
+      severity: "ERROR",
+    });
     if (error.name == "SequelizeValidationError") {
       return res.status(400).json({ message: error.message });
     } else if (error.name == "SequelizeUniqueConstraintError") {
