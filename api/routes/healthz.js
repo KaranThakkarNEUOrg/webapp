@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { getHealthzStatus } = require("../controllers/healthz");
 const checkContentLength = require("../middleware/contentLength");
+const logger = require("../middleware/logger");
 
 /**
  * @swagger
@@ -91,10 +92,17 @@ router.all("/", checkContentLength, (req, res) => {
     Object.keys(req.params).length !== 0 ||
     Object.keys(req.query).length !== 0
   ) {
+    logger.warn(`Invalid request to /healthz endpoint`, {
+      severity: "WARNING",
+    });
     res.status(400).end();
   } else if (req.method === "GET") {
+    logger.info(`GET /healthz endpoint`, { severity: "INFO" });
     getHealthzStatus(req, res);
   } else {
+    logger.warn(`Method Not Allowed for /healthz endpoint`, {
+      severity: "WARNING",
+    });
     res.status(405).end();
   }
 });

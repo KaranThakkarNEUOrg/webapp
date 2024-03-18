@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const logger = require("./logger");
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -20,11 +21,17 @@ const authMiddleware = async (req, res, next) => {
       user && bcrypt.compareSync(password, user?.password);
 
     if (!isPasswordMatch) {
+      logger.error(`authMiddleware: Invalid username or password`, {
+        severity: "ERROR",
+      });
       return res.status(401).end();
     }
     req.user = user;
     next();
   } catch (error) {
+    logger.error(`authMiddleware: ${error.message}`, {
+      severity: "ERROR",
+    });
     return res.status(401).end();
   }
 };
