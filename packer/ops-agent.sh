@@ -15,6 +15,7 @@ content="logging:
       type: parse_json
       time_key: "timestamp"
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      severity_key: "severity"
   service:
     pipelines:
       default_pipeline:
