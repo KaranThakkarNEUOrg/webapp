@@ -10,12 +10,12 @@ content="logging:
       include_paths:
         - /var/log/webapp/app.log
       record_log_file_path: true
+      severity_name: severity
   processors:
     my-app-processor:
       type: parse_json
       time_key: "timestamp"
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
-      severity_key: "severity"
   service:
     pipelines:
       default_pipeline:
