@@ -14,12 +14,17 @@ content="logging:
     my-app-processor:
       type: parse_json
       time_key: "timestamp"
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      time_format: "%Y-%m-%dT%H:%M:%S.%L"
+    move_severity:
+      type: modify_fields
+      fields:
+        severity:
+          move_from: jsonPayload.severity
   service:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor]
+        processors: [my-app-processor,move_severity]
 "
 echo "$content" | sudo tee -a /etc/google-cloud-ops-agent/config.yaml
 sudo systemctl restart google-cloud-ops-agent

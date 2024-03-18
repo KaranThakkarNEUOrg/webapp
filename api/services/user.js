@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const logger = require("../middleware/logger");
+const { log } = require("console");
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
@@ -8,7 +9,7 @@ const passwordRegex =
 const getUserService = async (req, res) => {
   try {
     logger.info("getUserService: Fetching user details", { severity: "INFO" });
-    return res.status(200).json({
+    res.status(200).json({
       id: req.user.id,
       first_name: req.user.first_name,
       last_name: req.user.last_name,
@@ -16,6 +17,10 @@ const getUserService = async (req, res) => {
       account_created: req.user.account_created,
       account_updated: req.user.account_updated,
     });
+    logger.info("getUserService: User details fetched successfully", {
+      severity: "INFO",
+    });
+    return;
   } catch (error) {
     logger.error(`getUserService: Error fetching user details: ${error}`, {
       severity: "ERROR",
@@ -71,14 +76,26 @@ const createUserService = async (req, res) => {
       account_updated: user.account_updated,
     });
   } catch (error) {
+    if (error.name == "SequelizeValidationError") {
+      logger.error(`createUserService: Error creating user: ${error.message}`, {
+        severity: "ERROR",
+      });
+      return res.status(400).json({ message: error.message });
+    } else if (error.name == "SequelizeUniqueConstraintError") {
+      logger.error(
+        `createUserService: Error creating user: Username already exists`,
+        {
+          severity: "ERROR",
+        }
+      );
+      return res.status(409).json({ error: "Username already exists" });
+    }
     logger.error(`createUserService: Error creating user: ${error}`, {
       severity: "ERROR",
     });
-    if (error.name == "SequelizeValidationError") {
-      return res.status(400).json({ message: error.message });
-    } else if (error.name == "SequelizeUniqueConstraintError") {
-      return res.status(409).json({ error: "Username already exists" });
-    }
+    logger.error(`createUserService: Error creating user: ${error}`, {
+      severity: "ERROR",
+    });
     return res.status(400).json({ error: error });
   }
 };
@@ -124,19 +141,32 @@ const updateUserService = async (req, res) => {
     );
 
     logger.info(`updateUserService: User details updated successfully`, {
-      severity: "ERROR",
+      severity: "INFO",
     });
 
     return res.status(204).end();
   } catch (error) {
+    if (error.name == "SequelizeValidationError") {
+      logger.error(
+        `updateUserService: Error updating user details: ${error.message}`,
+        {
+          severity: "ERROR",
+        }
+      );
+      return res.status(400).json({ message: error.message });
+    } else if (error.name == "SequelizeUniqueConstraintError") {
+      logger.error(
+        `updateUserService: Error updating user details: Username already exists`,
+        {
+          severity: "ERROR",
+        }
+      );
+      return res.status(409).json({ error: "Username already exists" });
+    }
+
     logger.error(`updateUserService: Error updating user details: ${error}`, {
       severity: "ERROR",
     });
-    if (error.name == "SequelizeValidationError") {
-      return res.status(400).json({ message: error.message });
-    } else if (error.name == "SequelizeUniqueConstraintError") {
-      return res.status(409).json({ error: "Username already exists" });
-    }
     return res.status(400).end();
   }
 };

@@ -50,6 +50,9 @@ app.use(async (req, res, next) => {
     await getHealthStatusService();
     next();
   } catch (error) {
+    logger.error(`Health check failed: ${error.message}`, {
+      severity: "ERROR",
+    });
     res.status(503).end();
   }
 });
@@ -59,6 +62,9 @@ app.use(async (req, res, next) => {
     Object.keys(req.query).length != 0 ||
     Object.keys(req.params).length != 0
   ) {
+    logger.warn(`Invalid request to endpoint`, {
+      severity: "WARNING",
+    });
     return res.status(400).json({ message: "Query or parameters not allowed" });
   } else {
     next();
