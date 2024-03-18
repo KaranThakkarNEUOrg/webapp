@@ -69,7 +69,7 @@ app.use("/v1/user", userRouter);
 app.use("/healthz", healthzRouter);
 
 const server = app.listen(port, () => {
-  logger.info(`Server is running on port ${port}`);
+  logger.info(`Server is running on port ${port}`, { severity: "INFO" });
 });
 
 module.exports = server;
