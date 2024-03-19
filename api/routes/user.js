@@ -119,14 +119,14 @@ router.post("/", createUser);
 router.put("/self", authMiddleware, updateUser);
 
 router.all("/", (req, res) => {
-  logger.error(`Invalid endpoint or method for /user`, {
+  logger.error(`Invalid endpoint or method`, {
     severity: "ERROR",
   });
 
   res.status(405).send();
 });
 router.all("/self", (req, res) => {
-  logger.error(`Invalid endpoint or method for /self`, {
+  logger.error(`Invalid endpoint or method`, {
     severity: "ERROR",
   });
 

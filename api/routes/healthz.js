@@ -92,15 +92,14 @@ router.all("/", checkContentLength, (req, res) => {
     Object.keys(req.params).length !== 0 ||
     Object.keys(req.query).length !== 0
   ) {
-    logger.warn(`Invalid request to /healthz endpoint`, {
+    logger.warn(`Invalid request: body, params, query not allowed`, {
       severity: "WARNING",
     });
     res.status(400).end();
   } else if (req.method === "GET") {
-    logger.info(`GET /healthz endpoint`, { severity: "INFO" });
     getHealthzStatus(req, res);
   } else {
-    logger.warn(`Method Not Allowed for /healthz endpoint`, {
+    logger.warn(`Method Not Allowed for endpoint`, {
       severity: "WARNING",
     });
     res.status(405).end();
