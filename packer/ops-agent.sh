@@ -20,6 +20,7 @@ content="logging:
       fields:
         severity:
           move_from: jsonPayload.severity
+          default_value: "info"
   service:
     pipelines:
       default_pipeline:

@@ -69,9 +69,12 @@ app.use(async (req, res, next) => {
     Object.keys(req.query).length != 0 ||
     Object.keys(req.params).length != 0
   ) {
-    logger.warn(`Invalid request to endpoint`, {
-      severity: "WARNING",
-    });
+    logger.warn(
+      `Invalid request to endpoint: Query or parameters not allowed`,
+      {
+        severity: "WARNING",
+      }
+    );
     return res.status(400).json({ message: "Query or parameters not allowed" });
   } else {
     next();
