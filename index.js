@@ -8,6 +8,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require("swagger-jsdoc");
 const { getHealthStatusService } = require("./api/services/healthz");
 const logger = require("./api/middleware/logger");
+const expressWinston = require("express-winston");
 
 const userRouter = require("./api/routes/user");
 const healthzRouter = require("./api/routes/healthz");
@@ -16,6 +17,12 @@ const healthzRouter = require("./api/routes/healthz");
 const port = process.env.PORT;
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
+// Use express-winston middleware for request logging.
+app.use(
+  expressWinston.logger({
+    winstonInstance: logger,
+  })
+);
 
 // Serve Swagger UI
 const options = {
