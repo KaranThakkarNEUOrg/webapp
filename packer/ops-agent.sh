@@ -14,12 +14,12 @@ content="logging:
     my-app-processor:
       type: parse_json
       time_key: "timestamp"
-      time_format: "%Y-%m-%dT%H:%M:%S.%L"
+      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
     move_severity:
       type: modify_fields
       fields:
         severity:
-          move_from: jsonPayload.severity
+          copy_from: jsonPayload.severity
           default_value: "info"
   service:
     pipelines:
