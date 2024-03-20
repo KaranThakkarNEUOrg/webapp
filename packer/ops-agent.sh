@@ -13,7 +13,7 @@ content="logging:
   processors:
     my-app-processor:
       type: parse_json
-      time_key: "timestamp"
+      time_key: jsonPayload.timestamp
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
     move_severity:
       type: modify_fields
