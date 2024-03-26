@@ -52,19 +52,25 @@ const User = sequelize.define(
   }
 );
 
-const User_Metadata = sequelize.define("User_Metadata", {
-  id: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    readOnly: true,
-    allowNull: false,
+const User_Metadata = sequelize.define(
+  "User_Metadata",
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      readOnly: true,
+      allowNull: false,
+    },
+    timestamp: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      readOnly: true,
+    },
   },
-  timestamp: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    readOnly: true,
-  },
-});
+  {
+    timestamps: false,
+  }
+);
 
 // creates table if does not exists
 User.sync({ force: false });
