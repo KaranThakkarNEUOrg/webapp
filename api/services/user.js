@@ -2,9 +2,11 @@ const { User, User_Metadata } = require("../models/user");
 const bcrypt = require("bcrypt");
 const logger = require("../middleware/logger");
 const { PubSub } = require("@google-cloud/pubsub");
-const pubSubClient = new PubSub({
-  projectId: "csye6225-dev-414900",
-});
+if (process.env.NODE_ENV !== "test") {
+  const pubSubClient = new PubSub({
+    projectId: "csye6225-dev-414900",
+  });
+}
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
