@@ -31,6 +31,11 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    is_verified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -47,8 +52,23 @@ const User = sequelize.define(
   }
 );
 
+const User_Metadata = sequelize.define("User_Metadata", {
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    readOnly: true,
+    allowNull: false,
+  },
+  timestamp: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    readOnly: true,
+  },
+});
+
 // creates table if does not exists
 User.sync({ force: false });
+User_Metadata.sync({ force: false });
 
 User.beforeUpdate((user) => {
   // on update of the user object, set the account_updated field to the current date
@@ -60,4 +80,4 @@ User.beforeUpdate((user) => {
   }
 });
 
-module.exports = User;
+module.exports = { User, User_Metadata };

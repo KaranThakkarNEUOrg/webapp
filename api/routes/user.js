@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { getUser, createUser, updateUser } = require("../controllers/user");
+const {
+  getUser,
+  createUser,
+  updateUser,
+  verifyUser,
+} = require("../controllers/user");
 const authMiddleware = require("../middleware/auth");
 const checkContentLength = require("../middleware/contentLength");
 const logger = require("../middleware/logger");
@@ -76,6 +81,7 @@ const logger = require("../middleware/logger");
  *                 $ref: '#/components/schemas/User'
  */
 router.get("/self", checkContentLength, authMiddleware, getUser);
+router.get("/verifyUser", verifyUser);
 
 /**
  * @swagger

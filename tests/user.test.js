@@ -1,6 +1,6 @@
 const request = require("supertest");
 const server = require("../index");
-const User = require("../api/models/user");
+const { User } = require("../api/models/user");
 const sequelize = require("../api/config/database");
 const bcrypt = require("bcrypt");
 require("dotenv").config();

@@ -1,14 +1,19 @@
-const User = require("../models/user");
+const { User, User_Metadata } = require("../models/user");
 const bcrypt = require("bcrypt");
 const logger = require("../middleware/logger");
-const { log } = require("console");
+const { PubSub } = require("@google-cloud/pubsub");
+const pubSubClient = new PubSub({
+  projectId: "csye6225-dev-414900",
+});
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/;
 
 const getUserService = async (req, res) => {
   try {
-    logger.info("getUserService: Fetching user details", { severity: "INFO" });
+    logger.debug("getUserService: Fetching user details", {
+      severity: "DEBUG",
+    });
     res.status(200).json({
       id: req.user.id,
       first_name: req.user.first_name,
@@ -19,6 +24,9 @@ const getUserService = async (req, res) => {
     });
     logger.info("getUserService: User details fetched successfully", {
       severity: "INFO",
+    });
+    logger.debug("getUserService: completed", {
+      severity: "DEBUG",
     });
     return;
   } catch (error) {
@@ -67,6 +75,18 @@ const createUserService = async (req, res) => {
       severity: "INFO",
     });
 
+    const dataBuffer = Buffer.from(
+      JSON.stringify({
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username,
+      })
+    );
+    const messageId = await pubSubClient.topic("verify_email").publishMessage({
+      data: dataBuffer,
+    });
+
     return res.status(201).json({
       id: user.id,
       first_name: user.first_name,
@@ -90,9 +110,6 @@ const createUserService = async (req, res) => {
       );
       return res.status(409).json({ error: "Username already exists" });
     }
-    logger.error(`createUserService: Error creating user: ${error}`, {
-      severity: "ERROR",
-    });
     logger.error(`createUserService: Error creating user: ${error}`, {
       severity: "ERROR",
     });
@@ -171,8 +188,81 @@ const updateUserService = async (req, res) => {
   }
 };
 
+const verifyUserService = async (req, res) => {
+  try {
+    logger.info("verifyUserService: Verifying user", { severity: "INFO" });
+
+    const { id } = req.query;
+
+    if (!token) {
+      logger.info("verifyUserService: Verification token is required", {
+        severity: "ERROR",
+      });
+      return res.status(400).json({ error: "Verification token is required" });
+    }
+
+    const user = await User_Metadata.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!user) {
+      logger.error(
+        `verifyUserService: User not created in user_metadata table`,
+        {
+          severity: "ERROR",
+        }
+      );
+      return res
+        .status(404)
+        .json({ error: "User not created in user_metadata table" });
+    } else {
+      if (getTimeDifference(user.timestamp)) {
+        logger.error(`verifyUserService: Verification token expired`, {
+          severity: "ERROR",
+        });
+        return res.status(400).json({ error: "Verification token expired" });
+      }
+    }
+
+    await User.update(
+      {
+        is_verified: true,
+      },
+      {
+        where: {
+          id: id,
+        },
+      }
+    );
+
+    logger.info(`verifyUserService: User verified successfully`, {
+      severity: "INFO",
+    });
+
+    return res.status(200).json({ message: "User verified successfully" });
+  } catch (error) {
+    logger.error(`verifyUserService: Error verifying user: ${error}`, {
+      severity: "ERROR",
+    });
+    return res.status(400).json({ error: error });
+  }
+};
+
+const getTimeDifference = (userTimeStamp) => {
+  const currentUTCTime = new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+  const difference = currentUTCTime.getTime() - userTimeStamp.getTime();
+
+  return difference > 2;
+};
+
 module.exports = {
   getUserService,
   createUserService,
   updateUserService,
+  verifyUserService,
 };
