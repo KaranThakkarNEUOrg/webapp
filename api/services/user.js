@@ -84,13 +84,9 @@ const createUserService = async (req, res) => {
       })
     );
 
-    if (!process.env.NODE_ENV == "test") {
-      const messageId = await pubSubClient
-        .topic("verify_email")
-        .publishMessage({
-          data: dataBuffer,
-        });
-    }
+    const messageId = await pubSubClient.topic("verify_email").publishMessage({
+      data: dataBuffer,
+    });
 
     return res.status(201).json({
       id: user.id,
@@ -199,11 +195,11 @@ const verifyUserService = async (req, res) => {
 
     const { id } = req.query;
 
-    if (!token) {
-      logger.info("verifyUserService: Verification token is required", {
+    if (!id) {
+      logger.info("verifyUserService: Id is required", {
         severity: "ERROR",
       });
-      return res.status(400).json({ error: "Verification token is required" });
+      return res.status(400).json({ error: "Id is required" });
     }
 
     const user = await User_Metadata.findOne({
@@ -211,7 +207,6 @@ const verifyUserService = async (req, res) => {
         id: id,
       },
     });
-
     if (!user) {
       logger.error(
         `verifyUserService: User not created in user_metadata table`,
