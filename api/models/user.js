@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
 const User = sequelize.define(
-  "User",
+  "user",
   {
     id: {
       type: DataTypes.UUID,
@@ -49,11 +49,12 @@ const User = sequelize.define(
     timestamps: true,
     createdAt: "account_created",
     updatedAt: "account_updated",
+    freezeTableName: true,
   }
 );
 
 const User_Metadata = sequelize.define(
-  "User_Metadata",
+  "user_metadata",
   {
     id: {
       type: DataTypes.UUID,
@@ -69,6 +70,7 @@ const User_Metadata = sequelize.define(
   },
   {
     timestamps: false,
+    freezeTableName: true,
   }
 );
 

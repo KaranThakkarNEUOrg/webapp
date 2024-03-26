@@ -6,8 +6,8 @@
   "scripts": {
     "test-node": "jest ./tests/hello.test.js",
     "test-mysql": "jest ./tests/user.test.js --forceExit",
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "set NODE_ENV=prod && node index.js",
+    "dev": "set NODE_ENV=dev && nodemon index.js",
     "zip": "zip -r webapp.zip . -x \\*node_modules\\* \\*.git\\* \\*.env\\*"
   },
   "keywords": [

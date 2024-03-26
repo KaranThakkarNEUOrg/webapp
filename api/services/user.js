@@ -53,14 +53,16 @@ const createUserService = async (req, res) => {
       logger.error(`createUserService: Invalid fields [${additionalFields}]`, {
         severity: "ERROR",
       });
-      return res.status(400).json(`Invalid fields [${additionalFields}]`);
+      return res
+        .status(400)
+        .json({ message: `Invalid fields [${additionalFields}]` });
     }
 
     if (!userDetails.password.match(passwordRegex)) {
       logger.error(`createUserService: Invalid password`, {
         severity: "ERROR",
       });
-      return res.status(400).json("Invalid password");
+      return res.status(400).json({ message: "Invalid password" });
     }
 
     // hashing password
@@ -86,7 +88,7 @@ const createUserService = async (req, res) => {
       })
     );
 
-    if (!process.env.NODE_ENV == "test") {
+    if (process.env.NODE_ENV !== "test") {
       const messageId = await pubSubClient
         .topic("verify_email")
         .publishMessage({
@@ -140,14 +142,16 @@ const updateUserService = async (req, res) => {
       logger.error(`updateUserService: Invalid fields ${additionalFields}`, {
         severity: "ERROR",
       });
-      return res.status(400).json(`Invalid fields ${additionalFields}`);
+      return res
+        .status(400)
+        .json({ message: `Invalid fields ${additionalFields}` });
     }
 
     if (!password.match(passwordRegex)) {
       logger.error(`updateUserService: Invalid password`, {
         severity: "ERROR",
       });
-      return res.status(400).json("Invalid password");
+      return res.status(400).json({ message: "Invalid password" });
     }
 
     await User.update(
@@ -225,10 +229,10 @@ const verifyUserService = async (req, res) => {
         .json({ error: "User not created in user_metadata table" });
     } else {
       if (getTimeDifference(user.timestamp)) {
-        logger.error(`verifyUserService: Verification token expired`, {
+        logger.error(`verifyUserService: Verification time expired`, {
           severity: "ERROR",
         });
-        return res.status(400).json({ error: "Verification token expired" });
+        return res.status(400).json({ error: "Verification time expired" });
       }
     }
 
