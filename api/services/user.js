@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const logger = require("../middleware/logger");
 const { PubSub } = require("@google-cloud/pubsub");
 if (process.env.NODE_ENV !== "test") {
-  const pubSubClient = new PubSub({
+  var pubSubClient = new PubSub({
     projectId: "csye6225-dev-414900",
   });
 }
@@ -86,9 +86,13 @@ const createUserService = async (req, res) => {
       })
     );
 
-    const messageId = await pubSubClient.topic("verify_email").publishMessage({
-      data: dataBuffer,
-    });
+    if (!process.env.NODE_ENV == "test") {
+      const messageId = await pubSubClient
+        .topic("verify_email")
+        .publishMessage({
+          data: dataBuffer,
+        });
+    }
 
     return res.status(201).json({
       id: user.id,
