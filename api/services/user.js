@@ -83,9 +83,14 @@ const createUserService = async (req, res) => {
         username: user.username,
       })
     );
-    const messageId = await pubSubClient.topic("verify_email").publishMessage({
-      data: dataBuffer,
-    });
+
+    if (!process.env.NODE_ENV == "test") {
+      const messageId = await pubSubClient
+        .topic("verify_email")
+        .publishMessage({
+          data: dataBuffer,
+        });
+    }
 
     return res.status(201).json({
       id: user.id,
