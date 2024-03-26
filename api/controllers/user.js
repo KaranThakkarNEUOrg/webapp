@@ -2,6 +2,7 @@ const {
   getUserService,
   createUserService,
   updateUserService,
+  verifyUserService,
 } = require("../services/user");
 
 const getUser = async (req, res) => {
@@ -16,4 +17,8 @@ const updateUser = async (req, res) => {
   await updateUserService(req, res);
 };
 
-module.exports = { getUser, createUser, updateUser };
+const verifyUser = async (req, res) => {
+  await verifyUserService(req, res);
+};
+
+module.exports = { getUser, createUser, updateUser, verifyUser };
