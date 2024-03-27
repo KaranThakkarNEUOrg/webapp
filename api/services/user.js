@@ -122,7 +122,12 @@ const createUserService = async (req, res) => {
           severity: "ERROR",
         }
       );
-      return res.status(409).json({ error: "Username already exists" });
+      return res
+        .status(409)
+        .json({
+          error:
+            "Username already exists. Please you have not verified your email please check your inbox",
+        });
     }
     logger.error(`createUserService: Error creating user: ${error}`, {
       severity: "ERROR",
@@ -272,7 +277,7 @@ const getTimeDifference = (userTimeStamp) => {
   userTimeStamp = new Date(userTimeStamp).getTime();
 
   // Calculate the difference in minutes
-  const difference = Math.abs(date2 - date1) / 1000 / 60;
+  const difference = Math.abs(currentUTCTime - userTimeStamp) / 1000 / 60;
 
   return difference > 2;
 };
