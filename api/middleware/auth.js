@@ -17,6 +17,20 @@ const authMiddleware = async (req, res, next) => {
       },
     });
 
+    if (!user.is_verified) {
+      logger.error(
+        `authMiddleware: Please verify your account from the link send on email`,
+        {
+          severity: "ERROR",
+        }
+      );
+      return res
+        .status(401)
+        .json({
+          error: "Please verify your account from the link send on email",
+        });
+    }
+
     const isPasswordMatch =
       user && bcrypt.compareSync(password, user?.password);
 

@@ -7,7 +7,6 @@ const {
   verifyUser,
 } = require("../controllers/user");
 const authMiddleware = require("../middleware/auth");
-const verifiedUser = require("../middleware/verifiedUser");
 const checkContentLength = require("../middleware/contentLength");
 const logger = require("../middleware/logger");
 
@@ -81,7 +80,7 @@ const logger = require("../middleware/logger");
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get("/self", checkContentLength, authMiddleware, verifiedUser, getUser);
+router.get("/self", checkContentLength, authMiddleware, getUser);
 router.get("/verifyUser", verifyUser);
 
 /**
@@ -123,7 +122,7 @@ router.post("/", createUser);
  *                 $ref: '#/components/schemas/User'
  *                 x-properties: first_name, last_name, password, username
  */
-router.put("/self", authMiddleware, verifiedUser, updateUser);
+router.put("/self", authMiddleware, updateUser);
 
 router.all("/", (req, res) => {
   logger.error(`Invalid endpoint or method`, {
