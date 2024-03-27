@@ -122,12 +122,10 @@ const createUserService = async (req, res) => {
           severity: "ERROR",
         }
       );
-      return res
-        .status(409)
-        .json({
-          error:
-            "Username already exists. Please you have not verified your email please check your inbox",
-        });
+      return res.status(409).json({
+        error:
+          "Username already exists. Please you have not verified your email please check your inbox",
+      });
     }
     logger.error(`createUserService: Error creating user: ${error}`, {
       severity: "ERROR",
@@ -222,11 +220,25 @@ const verifyUserService = async (req, res) => {
       return res.status(400).json({ error: "Id is required" });
     }
 
+    const isUserVerified = await User.findOne({
+      where: {
+        id: id,
+      },
+    });
+
+    if (isUserVerified.is_verified) {
+      logger.error(`verifyUserService: User already verified`, {
+        severity: "ERROR",
+      });
+      return res.status(400).json({ error: "User already verified" });
+    }
+
     const user = await User_Metadata.findOne({
       where: {
         id: id,
       },
     });
+
     if (!user) {
       logger.error(
         `verifyUserService: User not created in user_metadata table`,
