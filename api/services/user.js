@@ -89,11 +89,16 @@ const createUserService = async (req, res) => {
     );
 
     if (process.env.NODE_ENV !== "test") {
-      const messageId = await pubSubClient
-        .topic("verify_email")
-        .publishMessage({
+      try {
+        await pubSubClient.topic("verify_email").publishMessage({
           data: dataBuffer,
         });
+      } catch (error) {
+        logger.error(`createUserService: Error publishing message: ${error}`, {
+          severity: "ERROR",
+        });
+        return res.status(400).json({ error: error });
+      }
     }
 
     return res.status(201).json({
@@ -261,11 +266,13 @@ const verifyUserService = async (req, res) => {
 };
 
 const getTimeDifference = (userTimeStamp) => {
-  const currentUTCTime = new Date()
-    .toISOString()
-    .slice(0, 19)
-    .replace("T", " ");
-  const difference = currentUTCTime.getTime() - userTimeStamp.getTime();
+  const currentUTCTime = new Date(
+    new Date().toISOString().slice(0, 19).replace("T", " ")
+  ).getTime();
+  userTimeStamp = new Date(userTimeStamp).getTime();
+
+  // Calculate the difference in minutes
+  const difference = Math.abs(date2 - date1) / 1000 / 60;
 
   return difference > 2;
 };
