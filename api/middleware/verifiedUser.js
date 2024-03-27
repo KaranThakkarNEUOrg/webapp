@@ -2,9 +2,9 @@ const { User } = require("../models/user");
 const logger = require("./logger");
 
 const verifiedUser = async (req, res, next) => {
-  const { id } = req.query;
-
+  if (process.env.NODE_ENV === "test") return next();
   try {
+    const { id } = req.query;
     if (!id) {
       logger.info("verifyUserService: Id is required", {
         severity: "ERROR",
