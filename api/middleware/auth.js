@@ -17,7 +17,15 @@ const authMiddleware = async (req, res, next) => {
       },
     });
 
-    if (!user.is_verified && process.env.NODE_ENV !== "test") {
+    const isPasswordMatch =
+      user && bcrypt.compareSync(password, user?.password);
+
+    if (!isPasswordMatch) {
+      logger.error(`authMiddleware: Invalid username or password`, {
+        severity: "ERROR",
+      });
+      return res.status(401).end();
+    } else if (!user.is_verified && process.env.NODE_ENV !== "test") {
       logger.error(
         `authMiddleware: Please verify your account from the link send on email`,
         {
@@ -27,16 +35,6 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({
         error: "Please verify your account from the link send on email",
       });
-    }
-
-    const isPasswordMatch =
-      user && bcrypt.compareSync(password, user?.password);
-
-    if (!isPasswordMatch) {
-      logger.error(`authMiddleware: Invalid username or password`, {
-        severity: "ERROR",
-      });
-      return res.status(401).end();
     }
     req.user = user;
     next();
