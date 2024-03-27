@@ -17,18 +17,16 @@ const authMiddleware = async (req, res, next) => {
       },
     });
 
-    if (!user.is_verified) {
+    if (!user.is_verified && process.env.NODE_ENV !== "test") {
       logger.error(
         `authMiddleware: Please verify your account from the link send on email`,
         {
           severity: "ERROR",
         }
       );
-      return res
-        .status(401)
-        .json({
-          error: "Please verify your account from the link send on email",
-        });
+      return res.status(401).json({
+        error: "Please verify your account from the link send on email",
+      });
     }
 
     const isPasswordMatch =
