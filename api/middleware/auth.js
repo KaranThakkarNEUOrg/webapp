@@ -32,7 +32,7 @@ const authMiddleware = async (req, res, next) => {
           severity: "ERROR",
         }
       );
-      return res.status(401).json({
+      return res.status(403).json({
         error: "Please verify your account from the link send on email",
       });
     }

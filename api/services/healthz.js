@@ -1,12 +1,13 @@
 const mysql = require("mysql2");
 const logger = require("../middleware/logger");
+const sequelize = require("../config/database");
 
 const getHealthStatusService = async () => {
   try {
     logger.info("getHealthStatusService: Checking database connection", {
       severity: "INFO",
     });
-    await checkDatabaseConnection();
+    await sequelize.authenticate();
     return;
   } catch (error) {
     logger.error(
