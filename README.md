@@ -1,3 +1,7 @@
+# Project Description
+
+This project is a web application that allows users to register, login, and manage their profile. The application is built using Node.js, Express.js, and MySQL. The application is deployed on GCP using Terraform and Packer.
+
 # Project setup Commands
 
     npm i
