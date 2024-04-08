@@ -9,10 +9,8 @@ env:
   PORT: ${{secrets.PORT}}
 
 on:
-  # pull_request:
-  #   types: [closed]
-  #   branches: [main]
   pull_request:
+    # types: [closed]
     branches: [main]
   workflow_dispatch:
 
