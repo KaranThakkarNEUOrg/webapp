@@ -4,9 +4,12 @@ const sequelize = require("../config/database");
 
 const getHealthStatusService = async () => {
   try {
-    logger.info("getHealthStatusService: Checking database connection", {
-      severity: "INFO",
-    });
+    logger.info(
+      "getHealthStatusService: Checking database connection - new image",
+      {
+        severity: "INFO",
+      }
+    );
     await sequelize.authenticate();
     return;
   } catch (error) {
