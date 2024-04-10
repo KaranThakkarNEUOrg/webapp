@@ -120,6 +120,6 @@ jobs:
       - name: Assign new template to instance group manager
         run: |
           gcloud compute instance-groups managed set-instance-template instance-group-manager \
-          --project=${{secrets.GCP_PROJECT_ID}} \
-          --template=${{env.TEMPLATE_NAME}} \
-          --region=us-east1
+              --project=${{secrets.GCP_PROJECT_ID}} \
+              --template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/us-east1/instanceTemplates/${{env.TEMPLATE_NAME}} \
+              --region=us-east1
