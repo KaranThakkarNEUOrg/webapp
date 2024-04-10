@@ -114,6 +114,6 @@ jobs:
 
       - name: Assign new template to instance group manager
         run: |
-          gcloud compute instance-groups managed set-instance-template instance-group-manager 
-          --template=${{env.TEMPLATE_NAME}} 
-          --region=us-east1
+          gcloud compute instance-groups managed set-instance-template instance-group-manager \
+          --template=${{env.TEMPLATE_NAME}} \
+          --region=us-east1 \
