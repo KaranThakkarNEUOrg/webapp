@@ -85,31 +85,32 @@ jobs:
 
           gcloud compute instance-templates create $TEMPLATE_NAME \
               --machine-type=e2-standard-2 \
-              --instance-template-region=us-east1 \ 
+              --instance-template-region=us-east1 \
               --region=us-east1 \
               --tags=webapp \
               --image=${{ env.latest_image_id }} \
               --boot-disk-size=40 \
-              --boot-disk-type=pd-ssd \ 
+              --boot-disk-type=pd-ssd \
               --boot-disk-device-name=terraform-instance \
               --network=csye6225-vpc \
               --subnet=webapp \
-              --service-account=ops-agent@csye6225-dev-414900.iam.gserviceaccount.com \
+              --service-account=ops-agent@${{secrets.GCP_PROJECT_ID}}.iam.gserviceaccount.com \
               --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms \
               --no-boot-disk-auto-delete \
               --boot-disk-kms-key=projects/csye6225-dev-414900/locations/us-east1/keyRings/webapp-key-ring-2/cryptoKeys/crypto-key-vm-2 \
-              --metadata startup-script='#!/bin/bash 
-              if [ ! -f /opt/webapp/.env ]; then \
-                  sudo echo "MYSQL_HOSTNAME=10.206.0.2" | sudo tee -a /opt/webapp/.env \
-                  sudo echo "MYSQL_PASSWORD=lYeE5VxczbEShFWM" | sudo tee -a /opt/webapp/.env \
-                  sudo echo "MYSQL_DATABASENAME=webapp" | sudo tee -a /opt/webapp/.env \
-                  sudo echo "MYSQL_USERNAME=webapp" | sudo tee -a /opt/webapp/.env \
-                  sudo echo "PORT=8080" | sudo tee -a /opt/webapp/.env \
-                  sudo echo "SALT_ROUNDS=10" | sudo tee -a /opt/webapp/.env \
-              fi \
-              sudo touch /opt/finish.txt \ 
-              sudo chown -R csye6225:csye6225 /opt/webapp/ \ 
-              sudo chmod 700 /opt/webapp/' \
+              --metadata startup-script= \
+              '#!/bin/bash
+              if [ ! -f /opt/webapp/.env ]; then
+                  sudo echo "MYSQL_HOSTNAME=10.206.0.2" | sudo tee -a /opt/webapp/.env
+                  sudo echo "MYSQL_PASSWORD=lYeE5VxczbEShFWM" | sudo tee -a /opt/webapp/.env
+                  sudo echo "MYSQL_DATABASENAME=webapp" | sudo tee -a /opt/webapp/.env
+                  sudo echo "MYSQL_USERNAME=webapp" | sudo tee -a /opt/webapp/.env
+                  sudo echo "PORT=8080" | sudo tee -a /opt/webapp/.env
+                  sudo echo "SALT_ROUNDS=10" | sudo tee -a /opt/webapp/.env
+              fi
+              sudo touch /opt/finish.txt
+              sudo chown -R csye6225:csye6225 /opt/webapp/
+              sudo chmod 700 /opt/webapp/'
               --quiet
 
       - name: Assign new template to instance group manager
