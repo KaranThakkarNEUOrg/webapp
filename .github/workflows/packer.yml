@@ -66,11 +66,11 @@ jobs:
               exit 1
           fi
 
-      - name: Build packer file
-        run: |
-          FILE="setup.pkr.hcl"
-          cd packer
-          packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
+      # - name: Build packer file
+      #   run: |
+      #     FILE="setup.pkr.hcl"
+      #     cd packer
+      #     packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
 
       - name: Get Latest Image ID
         run: |
@@ -123,3 +123,9 @@ jobs:
               --project=${{secrets.GCP_PROJECT_ID}} \
               --template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/us-east1/instanceTemplates/${{env.TEMPLATE_NAME}} \
               --region=us-east1
+
+      - name: Update instances inside instance group manager
+        run: |
+          gcloud compute instance-groups managed rolling-action start-update instance-group-manager \
+          --project=${{secrets.GCP_PROJECT_ID}} \
+          --region=us-east1
