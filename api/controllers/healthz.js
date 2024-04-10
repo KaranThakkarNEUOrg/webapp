@@ -6,7 +6,9 @@ const getHealthzStatus = async (req, res) => {
   res.set("cache-control", "no-store, no-cache, must-revalidate");
   try {
     await getHealthStatusService();
-    logger.info("getHealthzStatus: Health check passed", { severity: "INFO" });
+    logger.info("getHealthzStatus: Health check passed - new image", {
+      severity: "INFO",
+    });
     res.status(200).end();
   } catch (error) {
     res.status(503).end();
