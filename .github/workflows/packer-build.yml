@@ -138,11 +138,3 @@ jobs:
           gcloud compute instance-groups managed wait-until instance-group-manager \
               --region=${{secrets.region}} \
               --version-target-reached
-
-      - name: Delete old instance template
-        run: |
-          old_templates=$(gcloud compute instance-templates list --format='value(name)' --filter="name!=${{env.TEMPLATE_NAME}}")
-
-          for template in $old_templates; do
-            gcloud compute instance-templates delete $template --quiet
-          done
