@@ -65,8 +65,7 @@ build {
   }
 
   post-processor "manifest" {
-      output     = "manifest.json"
-      strip_path = true
-    }
-
+    output     = "manifest.json"
+    strip_path = true
+  }
 }
