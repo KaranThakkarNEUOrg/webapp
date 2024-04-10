@@ -71,25 +71,25 @@ jobs:
           cd packer
           packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
 
-      # - name: Extract image ID
-      #   id: extract
-      #   run: |
-      #     IMAGE_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
-      #     echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
+      - name: Extract image ID
+        id: extract
+        run: |
+          IMAGE_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
+          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
 
-      # - name: Create instance template
-      #   run: |
-      #     TEMPLATE_NAME="webapp-template-$(date +%Y%m%d%H%M%S)"
-      #     gcloud compute instance-templates create $TEMPLATE_NAME --machine-type=e2-standard-2 --instance-template-region=us-east1 --region=us-east1 --tags=webapp --image=$IMAGE_ID --boot-disk-size=40 --boot-disk-type=pd-ssd --boot-disk-device-name=terraform-instance --network=csye6225-vpc --subnet=webapp --service-account=ops-agent@csye6225-dev-414900.iam.gserviceaccount.com --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms --no-boot-disk-auto-delete --boot-disk-kms-key=projects/csye6225-dev-414900/locations/us-east1/keyRings/webapp-key-ring-2/cryptoKeys/crypto-key-vm-2 --metadata startup-script='#!/bin/bash
-      #     if [ ! -f /opt/webapp/.env ]; then
-      #         sudo echo "MYSQL_HOSTNAME=10.206.0.2" | sudo tee -a /opt/webapp/.env
-      #         sudo echo "MYSQL_PASSWORD=lYeE5VxczbEShFWM" | sudo tee -a /opt/webapp/.env
-      #         sudo echo "MYSQL_DATABASENAME=webapp" | sudo tee -a /opt/webapp/.env
-      #         sudo echo "MYSQL_USERNAME=webapp" | sudo tee -a /opt/webapp/.env
-      #         sudo echo "PORT=8080" | sudo tee -a /opt/webapp/.env
-      #         sudo echo "SALT_ROUNDS=10" | sudo tee -a /opt/webapp/.env
-      #     fi
-      #     sudo touch /opt/finish.txt
-      #     sudo chown -R csye6225:csye6225 /opt/webapp/
-      #     sudo chmod 700 /opt/webapp/
-      #     ' --quiet
+      - name: Create instance template
+        run: |
+          TEMPLATE_NAME="webapp-template-$(date +%Y%m%d%H%M%S)"
+          gcloud compute instance-templates create $TEMPLATE_NAME --machine-type=e2-standard-2 --instance-template-region=us-east1 --region=us-east1 --tags=webapp --image=$IMAGE_ID --boot-disk-size=40 --boot-disk-type=pd-ssd --boot-disk-device-name=terraform-instance --network=csye6225-vpc --subnet=webapp --service-account=ops-agent@csye6225-dev-414900.iam.gserviceaccount.com --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms --no-boot-disk-auto-delete --boot-disk-kms-key=projects/csye6225-dev-414900/locations/us-east1/keyRings/webapp-key-ring-2/cryptoKeys/crypto-key-vm-2 --metadata startup-script='#!/bin/bash
+          if [ ! -f /opt/webapp/.env ]; then
+              sudo echo "MYSQL_HOSTNAME=10.206.0.2" | sudo tee -a /opt/webapp/.env
+              sudo echo "MYSQL_PASSWORD=lYeE5VxczbEShFWM" | sudo tee -a /opt/webapp/.env
+              sudo echo "MYSQL_DATABASENAME=webapp" | sudo tee -a /opt/webapp/.env
+              sudo echo "MYSQL_USERNAME=webapp" | sudo tee -a /opt/webapp/.env
+              sudo echo "PORT=8080" | sudo tee -a /opt/webapp/.env
+              sudo echo "SALT_ROUNDS=10" | sudo tee -a /opt/webapp/.env
+          fi
+          sudo touch /opt/finish.txt
+          sudo chown -R csye6225:csye6225 /opt/webapp/
+          sudo chmod 700 /opt/webapp/
+          ' --quiet
