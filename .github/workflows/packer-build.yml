@@ -74,6 +74,7 @@ jobs:
       - name: Extract image ID
         id: extract
         run: |
+          echo "Current working directory: $(pwd)"
           IMAGE_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
           echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
 
