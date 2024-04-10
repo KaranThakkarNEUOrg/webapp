@@ -109,7 +109,7 @@ jobs:
               fi
               sudo touch /opt/finish.txt
               sudo chown -R csye6225:csye6225 /opt/webapp/
-              sudo chmod 700 /opt/webapp/'
+              sudo chmod 700 /opt/webapp/' \
               --quiet
 
       - name: Assign new template to instance group manager
