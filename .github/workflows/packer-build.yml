@@ -144,5 +144,5 @@ jobs:
           old_templates=$(gcloud compute instance-templates list --format='value(name)' --filter="name!=${{env.TEMPLATE_NAME}}")
 
           for template in $old_templates; do
-          gcloud compute instance-templates delete $template --quiet
+            gcloud compute instance-templates delete $template --quiet
           done
