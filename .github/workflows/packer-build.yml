@@ -65,11 +65,11 @@ jobs:
           cd packer
           packer init .
 
-          - name: Build packer file
-          run: |
-            FILE="setup.pkr.hcl"
-            cd packer
-            packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
+      - name: Build packer file
+        run: |
+          FILE="setup.pkr.hcl"
+          cd packer
+          packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
 
       - name: Get Latest Image ID
         run: |
@@ -91,8 +91,8 @@ jobs:
 
           gcloud compute instance-templates create $TEMPLATE_NAME \
               --machine-type=e2-standard-2 \
-              --instance-template-region=us-east1 \
-              --region=us-east1 \
+              --instance-template-region=${{secrets.region}} \
+              --region=${{secrets.region}} \
               --tags=webapp \
               --image=csye-centos-8-1 \
               --boot-disk-size=20 \
@@ -122,19 +122,19 @@ jobs:
         run: |
           gcloud compute instance-groups managed set-instance-template instance-group-manager \
               --project=${{secrets.GCP_PROJECT_ID}} \
-              --template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/us-east1/instanceTemplates/${{env.TEMPLATE_NAME}} \
-              --region=us-east1
+              --template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{secrets.region}}/instanceTemplates/${{env.TEMPLATE_NAME}} \
+              --region=${{secrets.region}}
 
       - name: Update instances inside instance group manager
         run: |
           gcloud compute instance-groups managed rolling-action start-update instance-group-manager \
-              --version='template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/us-east1/instanceTemplates/${{env.TEMPLATE_NAME}}' \
-              --region=us-east1 \
+              --version='template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{secrets.region}}/instanceTemplates/${{env.TEMPLATE_NAME}}' \
+              --region=${{secrets.region}} \
               --quiet
 
       - name: Wait for instances to be updated and running
         run: |
           gcloud config set project ${{secrets.GCP_PROJECT_ID}}
           gcloud compute instance-groups managed wait-until instance-group-manager \
-              --region=us-east1 \
+              --region=${{secrets.region}} \
               --version-target-reached
