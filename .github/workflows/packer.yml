@@ -107,10 +107,10 @@ jobs:
               --boot-disk-kms-key=$key_ring_url \
               --metadata startup-script="#!/bin/bash
               if [ ! -f /opt/webapp/.env ]; then
-                  sudo echo \"MYSQL_HOSTNAME='$sql_hostname'\" | sudo tee -a /opt/webapp/.env
-                  sudo echo \"MYSQL_PASSWORD='$sql_password'\" | sudo tee -a /opt/webapp/.env
-                  sudo echo \"MYSQL_DATABASENAME='$sql_database'\" | sudo tee -a /opt/webapp/.env
-                  sudo echo \"MYSQL_USERNAME='$sql_user'\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_HOSTNAME=$sql_hostname\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_PASSWORD=$sql_password\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_DATABASENAME=$sql_database\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_USERNAME=$sql_user\" | sudo tee -a /opt/webapp/.env
                   sudo echo \"PORT=${{secrets.PORT}}\" | sudo tee -a /opt/webapp/.env
                   sudo echo \"SALT_ROUNDS=10\" | sudo tee -a /opt/webapp/.env
               fi
