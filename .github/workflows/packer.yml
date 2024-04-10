@@ -83,8 +83,9 @@ jobs:
           TEMPLATE_NAME="webapp-template-$(date +%Y%m%d%H%M%S)"
           echo "TEMPLATE_NAME=$TEMPLATE_NAME" >> $GITHUB_ENV
 
-          sql_hostname=$(gcloud secrets versions access latest --secret=mysql-host)
-          sql_password=$(gcloud secrets versions access latest --secret=mysql-password)
+          sql_hostname=$(gcloud secrets versions access latest --secret=sql-host)
+          sql_password=$(gcloud secrets versions access latest --secret=sql-password)
+          key_ring_url=$(gcloud secrets versions access latest --secret=vm-crypto-key)
 
 
           gcloud compute instance-templates create $TEMPLATE_NAME \
@@ -101,7 +102,7 @@ jobs:
               --service-account=ops-agent@${{secrets.GCP_PROJECT_ID}}.iam.gserviceaccount.com \
               --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms \
               --no-boot-disk-auto-delete \
-              --boot-disk-kms-key=projects/csye6225-dev-414900/locations/us-east1/keyRings/webapp-key-ring-2/cryptoKeys/crypto-key-vm-2 \
+              --boot-disk-kms-key=$key_ring_url \
               --metadata startup-script='#!/bin/bash
               if [ ! -f /opt/webapp/.env ]; then
                   sudo echo "MYSQL_HOSTNAME=$sql_hostname" | sudo tee -a /opt/webapp/.env
