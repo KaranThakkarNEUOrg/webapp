@@ -66,16 +66,16 @@ jobs:
               exit 1
           fi
 
-      - name: Build packer file
-        run: |
-          FILE="setup.pkr.hcl"
-          cd packer
-          packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
+      # - name: Build packer file
+      #   run: |
+      #     FILE="setup.pkr.hcl"
+      #     cd packer
+      #     packer build -force -var "credentials=$GOOGLE_APPLICATION_CREDENTIALS" -var "project_id=${{secrets.GCP_PROJECT_ID}}" -var "MYSQL_PASSWORD=${{secrets.MYSQL_ROOT_PASSWORD}}" -var "MYSQL_DATABASENAME=${{secrets.MYSQL_DATABASENAME}}" -var "MYSQL_USERNAME=${{secrets.MYSQL_USERNAME}}" -var "MYSQL_HOSTNAME=${{secrets.MYSQL_HOSTNAME}}" -var "SALT_ROUNDS=${{secrets.SALT_ROUNDS}}" -var "PORT=${{secrets.PORT}}" $FILE || exit 1
 
-      - name: Get Latest Image ID
-        run: |
-          latest_image_id=$(gcloud compute images list --sort-by=creationTimestamp --format='value(id)' --limit=1)
-          echo "latest_image_id=$latest_image_id" >> $GITHUB_ENV
+      # - name: Get Latest Image ID
+      #   run: |
+      #     latest_image_id=$(gcloud compute images list --sort-by=creationTimestamp --format='value(id)' --limit=1)
+      #     echo "latest_image_id=$latest_image_id" >> $GITHUB_ENV
 
       - name: Create instance template
         id: create-template
@@ -107,12 +107,12 @@ jobs:
               --boot-disk-kms-key=$key_ring_url \
               --metadata startup-script="#!/bin/bash
               if [ ! -f /opt/webapp/.env ]; then
-                  sudo echo "MYSQL_HOSTNAME='$sql_hostname'" | sudo tee -a /opt/webapp/.env
-                  sudo echo "MYSQL_PASSWORD='$sql_password'" | sudo tee -a /opt/webapp/.env
-                  sudo echo "MYSQL_DATABASENAME='$sql_database'" | sudo tee -a /opt/webapp/.env
-                  sudo echo "MYSQL_USERNAME='$sql_user'" | sudo tee -a /opt/webapp/.env
-                  sudo echo "PORT=${{secrets.PORT}}" | sudo tee -a /opt/webapp/.env
-                  sudo echo "SALT_ROUNDS=10" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_HOSTNAME='$sql_hostname'\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_PASSWORD='$sql_password'\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_DATABASENAME='$sql_database'\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"MYSQL_USERNAME='$sql_user'\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"PORT=${{secrets.PORT}}\" | sudo tee -a /opt/webapp/.env
+                  sudo echo \"SALT_ROUNDS=10\" | sudo tee -a /opt/webapp/.env
               fi
               sudo touch /opt/finish.txt
               sudo chown -R csye6225:csye6225 /opt/webapp/
