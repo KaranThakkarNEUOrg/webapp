@@ -82,7 +82,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/v2/user", userRouter);
+app.use("/v1/user", userRouter);
 app.use("/healthz", healthzRouter);
 
 const server = app.listen(port, () => {
