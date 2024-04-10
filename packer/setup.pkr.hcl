@@ -62,6 +62,10 @@ build {
       "SALT_ROUNDS=${var.SALT_ROUNDS}",
       "PORT=${var.PORT}",
     ]
+    post-processor "manifest" {
+      output     = "manifest.json"
+      strip_path = true
+    }
   }
 
 }
