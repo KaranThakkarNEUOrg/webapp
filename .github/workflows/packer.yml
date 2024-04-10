@@ -133,7 +133,7 @@ jobs:
 
       - name: Wait for instances to be updated and running
         run: |
+          gcloud config set project ${{secrets.GCP_PROJECT_ID}}
           gcloud compute instance-groups managed wait-until instance-group-manager \
-              --project=${{ env.GCP_PROJECT_ID }} \
               --region=us-east1 \
               --stable
