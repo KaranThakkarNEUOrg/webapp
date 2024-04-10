@@ -82,8 +82,8 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/v1/user", userRouter);
-app.use("/health", healthzRouter);
+app.use("/v2/user", userRouter);
+app.use("/healthz", healthzRouter);
 
 const server = app.listen(port, () => {
   logger.info(`Server is running on port ${port}`, { severity: "INFO" });
