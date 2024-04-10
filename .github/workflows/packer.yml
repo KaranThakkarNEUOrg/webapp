@@ -127,6 +127,13 @@ jobs:
       - name: Update instances inside instance group manager
         run: |
           gcloud compute instance-groups managed rolling-action start-update instance-group-manager \
-          --version='template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/us-east1/instanceTemplates/${{env.TEMPLATE_NAME}}' \
-          --region=us-east1 \
-          --quiet
+              --version='template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/us-east1/instanceTemplates/${{env.TEMPLATE_NAME}}' \
+              --region=us-east1 \
+              --quiet
+
+      - name: Wait for instances to be updated and running
+        run: |
+          gcloud compute instance-groups managed wait-until instance-group-manager \
+              --project=${{ env.GCP_PROJECT_ID }} \
+              --region=us-east1 \
+              --stable
