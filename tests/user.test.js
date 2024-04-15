@@ -13,11 +13,11 @@ describe("User APIs", () => {
     password: "Karan@api123",
   };
 
-  describe("POST /v1/user", () => {
+  describe("POST /v3/user", () => {
     it("should create a new user", async () => {
       try {
         const response = await request(server)
-          .post("/v1/user")
+          .post("/v3/user")
           .send(dummyData)
           .expect(201);
 
@@ -37,7 +37,7 @@ describe("User APIs", () => {
     it("should get the user details", async () => {
       try {
         await request(server)
-          .get("/v1/user/self")
+          .get("/v3/user/self")
           .auth(dummyData.username, dummyData.password)
           .expect(200);
 
@@ -53,7 +53,7 @@ describe("User APIs", () => {
     });
   });
 
-  describe("PUT v1/user/self", () => {
+  describe("PUT v3/user/self", () => {
     const updatedDetails = {
       first_name: "KaranC",
       last_name: "ThakkarC",
@@ -63,7 +63,7 @@ describe("User APIs", () => {
     it("should update the user details", async () => {
       try {
         await request(server)
-          .put("/v1/user/self")
+          .put("/v3/user/self")
           .auth(dummyData.username, dummyData.password)
           .send(updatedDetails)
           .expect(204);
@@ -76,7 +76,7 @@ describe("User APIs", () => {
     it("should get the user details", async () => {
       try {
         const response = await request(server)
-          .get("/v1/user/self")
+          .get("/v3/user/self")
           .auth(dummyData.username, updatedDetails.password)
           .expect(200);
 

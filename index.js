@@ -68,7 +68,7 @@ app.use(async (req, res, next) => {
   if (
     (Object.keys(req.query).length != 0 ||
       Object.keys(req.params).length != 0) &&
-    !req.originalUrl.includes("/v1/user/verifyUser")
+    !req.originalUrl.includes("/v3/user/verifyUser")
   ) {
     logger.warn(
       `Invalid request to endpoint: Query or parameters not allowed`,
@@ -82,7 +82,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/v1/user", userRouter);
+app.use("/v3/user", userRouter);
 app.use("/healthz", healthzRouter);
 
 const server = app.listen(port, () => {
